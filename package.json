@@ -14,7 +14,7 @@
     "flow-typed": "rimraf flow-typed/npm && flow-typed install --overwrite || true",
     "lint": "cross-env NODE_ENV=development eslint --cache --format=pretty .",
     "lint-fix": "yarn --silent lint --fix; exit 0",
-    "lint-styles": "stylelint --ignore-path .eslintignore '**/*.*(css|scss)' --syntax scss",
+    "lint-styles": "stylelint --ignore-path .eslintignore '**/*.css'",
     "lint-styles-fix": "yarn --silent lint-styles --fix; exit 0",
     "package": "yarn build && electron-builder build --publish never",
     "package-all": "yarn build && electron-builder build -mwl",
@@ -23,7 +23,7 @@
     "package-win": "yarn build && electron-builder build --win --x64",
     "postinstall": "yarn flow-typed && electron-builder install-app-deps package.json && yarn build-dll && opencollective-postinstall",
     "postlint-fix": "prettier --ignore-path .eslintignore --single-quote --write '**/*.{*{js,jsx,json},babelrc,eslintrc,prettierrc,stylelintrc}'",
-    "postlint-styles-fix": "prettier --ignore-path .eslintignore --single-quote --write '**/*.{css,scss}'",
+    "postlint-styles-fix": "prettier --ignore-path .eslintignore --single-quote --write '**/*.css'",
     "precommit": "lint-staged",
     "prestart": "yarn build",
     "start": "cross-env NODE_ENV=production electron ./app/main.prod.js",
@@ -45,8 +45,8 @@
       "prettier --ignore-path .eslintignore --parser json --write",
       "git add"
     ],
-    "*.{css,scss}": [
-      "stylelint --ignore-path .eslintignore --syntax scss --fix",
+    "*.css": [
+      "stylelint --ignore-path .eslintignore --fix",
       "prettier --ignore-path .eslintignore --single-quote --write",
       "git add"
     ],
@@ -147,7 +147,7 @@
     "testURL": "http://localhost/",
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/internals/mocks/fileMock.js",
-      "\\.(css|less|sass|scss)$": "identity-obj-proxy"
+      "\\.css$": "identity-obj-proxy"
     },
     "moduleFileExtensions": [
       "js",
@@ -227,14 +227,12 @@
     "jest": "24.8.0",
     "lint-staged": "8.1.6",
     "mini-css-extract-plugin": "0.6.0",
-    "node-sass": "4.12.0",
     "opencollective-postinstall": "2.0.2",
     "optimize-css-assets-webpack-plugin": "5.0.1",
     "prettier": "1.17.0",
     "react-test-renderer": "16.8.6",
     "redux-logger": "3.0.6",
     "rimraf": "2.6.3",
-    "sass-loader": "7.1.0",
     "sinon": "7.3.2",
     "spectron": "5.0.0",
     "style-loader": "0.23.1",
