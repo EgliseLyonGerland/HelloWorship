@@ -69,6 +69,7 @@ app.on('ready', async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
+    titleBarStyle: 'hiddenInset',
     webPreferences: {
       nodeIntegration: true,
     },
