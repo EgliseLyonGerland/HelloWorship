@@ -9,19 +9,19 @@ import Routes from '../Routes';
 
 type Props = {
   store: Store,
-  history: {}
+  history: {},
 };
 
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#322E3C'
+      main: '#322E3C',
     },
     background: {
-      default: '#322E3C'
+      default: '#322E3C',
     },
-    type: 'dark'
-  }
+    type: 'dark',
+  },
 });
 
 export default class Root extends Component<Props> {

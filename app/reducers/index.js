@@ -6,10 +6,10 @@ import counter from './counter';
 import type { Reducers, Action, CombinedReducer } from './types';
 
 export default function createRootReducer(
-  history: HashHistory
+  history: HashHistory,
 ): CombinedReducer {
   return combineReducers<Reducers, Action>({
     router: connectRouter(history),
-    counter
+    counter,
   });
 }

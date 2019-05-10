@@ -16,7 +16,7 @@ function configureStore(initialState?: counterStateType) {
   return createStore<CombinedReducer, counterStateType, StoreEnhancer<*, *, *>>(
     rootReducer,
     initialState,
-    enhancer
+    enhancer,
   );
 }
 

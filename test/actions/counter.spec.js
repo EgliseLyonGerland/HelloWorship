@@ -35,7 +35,7 @@ describe('actions', () => {
     fn(dispatch);
     setTimeout(() => {
       expect(dispatch.calledWith({ type: actions.INCREMENT_COUNTER })).toBe(
-        true
+        true,
       );
       done();
     }, 5);
