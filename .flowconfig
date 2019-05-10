@@ -17,6 +17,12 @@
 esproposal.class_static_fields=enable
 esproposal.class_instance_fields=enable
 esproposal.export_star_as=enable
+module.name_mapper='^actions\/\(.*\)$' -> '<PROJECT_ROOT>/app/actions/\1'
+module.name_mapper='^components\/\(.*\)$' -> '<PROJECT_ROOT>/app/components/\1'
+module.name_mapper='^containers\/\(.*\)$' -> '<PROJECT_ROOT>/app/containers/\1'
+module.name_mapper='^reducers\/\(.*\)$' -> '<PROJECT_ROOT>/app/reducers/\1'
+module.name_mapper='^store\/\(.*\)$' -> '<PROJECT_ROOT>/app/store/\1'
+module.name_mapper='^utils\/\(.*\)$' -> '<PROJECT_ROOT>/app/utils/\1'
 module.name_mapper.extension='css' -> '<PROJECT_ROOT>/internals/flow/CSSModule.js.flow'
 module.name_mapper.extension='styl' -> '<PROJECT_ROOT>/internals/flow/CSSModule.js.flow'
 module.name_mapper.extension='png' -> '<PROJECT_ROOT>/internals/flow/WebpackAsset.js.flow'
