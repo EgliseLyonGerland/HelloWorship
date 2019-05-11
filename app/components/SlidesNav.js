@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Paper } from '@material-ui/core';
 import { styled } from '@material-ui/styles';
 import range from 'lodash/range';
 
@@ -54,12 +55,11 @@ const ThumbnailImageWrapper = styled('div')({
   },
 });
 
-const ThumbnailImage = styled('div')(({ active }) => ({
+const ThumbnailImage = styled(Paper)(({ active }) => ({
   paddingBottom: '56.25%',
   borderRadius: 2,
   border: [['solid', 1]],
   borderColor: active ? '#F9B74F' : 'rgba(255,255,255,0.7)',
-  boxShadow: [[0, 0, 5, 'rgba(0,0,0,0.6)']],
   backgroundSize: 'cover',
 }));
 
@@ -73,6 +73,7 @@ export default class SlidesNav extends Component {
               <ThumbnailPosition>{index + 1}</ThumbnailPosition>
               <ThumbnailImageWrapper>
                 <ThumbnailImage
+                  elevation={3}
                   active={index === 3}
                   style={{
                     backgroundImage: `url(https://picsum.photos/id/${index +
