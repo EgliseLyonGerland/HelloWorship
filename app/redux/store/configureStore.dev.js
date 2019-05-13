@@ -4,14 +4,14 @@ import { createHashHistory } from 'history';
 import { routerMiddleware, routerActions } from 'connected-react-router';
 import { createLogger } from 'redux-logger';
 import createRootReducer from 'redux/reducers';
-import * as counterActions from 'redux/actions/counter';
-import type { counterStateType } from 'redux/reducers/types';
+import * as slidesActions from 'redux/actions/slides';
+import type { State } from 'redux/types';
 
 const history = createHashHistory();
 
 const rootReducer = createRootReducer(history);
 
-const configureStore = (initialState?: counterStateType) => {
+const configureStore = (initialState?: State) => {
   // Redux Configuration
   const middleware = [];
   const enhancers = [];
@@ -36,7 +36,7 @@ const configureStore = (initialState?: counterStateType) => {
 
   // Redux DevTools Configuration
   const actionCreators = {
-    ...counterActions,
+    ...slidesActions,
     ...routerActions,
   };
   // If Redux DevTools Extension is installed use it, otherwise use Redux compose

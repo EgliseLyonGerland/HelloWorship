@@ -7,20 +7,24 @@ import type {
 
 export type Reducers = {
   router: ReduxReducer<>,
-  counter: ReduxReducer<number, Action>,
+  slides: ReduxReducer<number, Action>,
 };
 
 export type CombinedReducer = ReduxCombinedReducer<Reducers, Action>;
 
-export type counterStateType = {
-  +counter: number,
+export type Slide = mixed;
+
+export type SlidesState = Array<Slide>;
+
+export type State = {
+  +slides: SlidesState,
 };
 
 export type Action = {
   +type: string,
 };
 
-export type GetState = () => counterStateType;
+export type GetState = () => State;
 
 export type Dispatch = ReduxDispatch<Action>;
 

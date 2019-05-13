@@ -5,8 +5,11 @@ import { styled } from '@material-ui/styles';
 import Header from 'components/Header';
 import Slide from 'components/Slide';
 import SlidesNav from 'components/SlidesNav';
+import type { SlidesState } from 'redux/types';
 
-type Props = {};
+type Props = {
+  slides: SlidesState,
+};
 
 const Wrapper = styled('div')({
   width: '100vw',
@@ -59,6 +62,8 @@ export default class Home extends Component<Props> {
   props: Props;
 
   render() {
+    const { slides } = this.props;
+
     return (
       <Wrapper data-tid="container">
         <HeaderWrapper>
@@ -66,7 +71,7 @@ export default class Home extends Component<Props> {
         </HeaderWrapper>
         <ContentWrapper>
           <SlidesNavWrapper>
-            <SlidesNav />
+            <SlidesNav slides={slides} />
           </SlidesNavWrapper>
           <CurrentSlideWrapper>
             <CurrentSlide elevation={10} square>

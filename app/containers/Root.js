@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { CssBaseline, createMuiTheme } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
-import type { Store } from 'redux/reducers/types';
+import type { Store } from 'redux/types';
 import Routes from '../Routes';
 
 type Props = {

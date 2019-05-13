@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { Paper } from '@material-ui/core';
 import { styled } from '@material-ui/styles';
-import range from 'lodash/range';
+import type { SlidesState } from 'redux/types';
+
+type Props = {
+  slides: SlidesState,
+};
 
 const Wrapper = styled('div')({
   position: 'relative',
@@ -55,25 +59,31 @@ const ThumbnailImageWrapper = styled('div')({
   },
 });
 
-const ThumbnailImage = styled(Paper)(({ active }) => ({
-  paddingBottom: '56.25%',
-  borderRadius: 2,
-  border: [['solid', 1]],
-  borderColor: active ? '#F9B74F' : 'rgba(255,255,255,0.7)',
-  backgroundSize: 'cover',
-}));
+const ThumbnailImage = styled(({ active, ...rest }) => <Paper {...rest} />)(
+  ({ active }) => ({
+    paddingBottom: '56.25%',
+    border: [['solid', 1]],
+    borderColor: active ? '#F9B74F' : 'rgba(255,255,255,0.7)',
+    backgroundSize: 'cover',
+  }),
+);
 
-export default class SlidesNav extends Component {
+export default class SlidesNav extends Component<Props> {
+  props: Props;
+
   render() {
+    const { slides } = this.props;
+
     return (
       <Wrapper>
         <Inner>
-          {range(0, 20).map(index => (
-            <ThumbnailWrapper key={index}>
+          {slides.map((slide, index) => (
+            <ThumbnailWrapper key={slide.id}>
               <ThumbnailPosition>{index + 1}</ThumbnailPosition>
               <ThumbnailImageWrapper>
                 <ThumbnailImage
                   elevation={3}
+                  square
                   active={index === 3}
                   style={{
                     backgroundImage: `url(https://picsum.photos/id/${index +

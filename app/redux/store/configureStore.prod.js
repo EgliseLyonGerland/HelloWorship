@@ -5,15 +5,15 @@ import { createHashHistory } from 'history';
 import { routerMiddleware } from 'connected-react-router';
 import type { StoreEnhancer } from 'redux';
 import createRootReducer from 'redux/reducers';
-import type { CombinedReducer, counterStateType } from 'redux/reducers/types';
+import type { CombinedReducer, State } from 'redux/types';
 
 const history = createHashHistory();
 const rootReducer = createRootReducer(history);
 const router = routerMiddleware(history);
 const enhancer = applyMiddleware(thunk, router);
 
-function configureStore(initialState?: counterStateType) {
-  return createStore<CombinedReducer, counterStateType, StoreEnhancer<*, *, *>>(
+function configureStore(initialState?: State) {
+  return createStore<CombinedReducer, State, StoreEnhancer<*, *, *>>(
     rootReducer,
     initialState,
     enhancer,
