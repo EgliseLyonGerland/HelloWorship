@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { TextField, Paper, Button } from '@material-ui/core';
 import { styled } from '@material-ui/styles';
 import Header from 'components/Header';
+import Slide from 'components/Slide';
 import SlidesNav from 'components/SlidesNav';
 
 type Props = {};
@@ -26,20 +27,20 @@ const SlidesNavWrapper = styled('div')({
   width: 136,
 });
 
-const CurrentSlideWrapper = styled('div')({
+const CurrentSlideWrapper = styled('div')(({ theme }) => ({
   flexGrow: 1,
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
-  padding: 32,
-});
+  padding: '8vw',
+
+  [theme.breakpoints.down('lg')]: {
+    padding: '4vw',
+  },
+}));
 
 const CurrentSlide = styled(Paper)({
-  paddingTop: '56.25%',
-  backgroundSize: 'cover',
-  backgroundImage: 'url(https://picsum.photos/id/13/500/300)',
   border: [['solid', 1, 'white']],
-  borderRadius: 4,
 });
 
 const CurrentSlideActions = styled('div')({
@@ -68,9 +69,11 @@ export default class Home extends Component<Props> {
             <SlidesNav />
           </SlidesNavWrapper>
           <CurrentSlideWrapper>
-            <CurrentSlide elevation={10} />
+            <CurrentSlide elevation={10} square>
+              <Slide />
+            </CurrentSlide>
             <CurrentSlideActions>
-              <Button variant="outlined" size="small" color="white">
+              <Button variant="outlined" size="small" color="inherit">
                 Edit
               </Button>
             </CurrentSlideActions>
