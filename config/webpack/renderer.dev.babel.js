@@ -52,7 +52,7 @@ export default merge.smart(baseConfig, {
   target: 'electron-renderer',
 
   entry: [
-    'react-hot-loader/patch',
+    // 'react-hot-loader/patch',
     `webpack-dev-server/client?http://localhost:${port}/`,
     'webpack/hot/only-dev-server',
     require.resolve('../../app/index'),
@@ -61,6 +61,13 @@ export default merge.smart(baseConfig, {
   output: {
     publicPath: `http://localhost:${port}/dist/`,
     filename: 'renderer.dev.js',
+  },
+
+  resolve: {
+    alias: {
+      // Fix https://github.com/gaearon/react-hot-loader#react--dom
+      'react-dom': '@hot-loader/react-dom',
+    },
   },
 
   module: {
