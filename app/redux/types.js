@@ -5,6 +5,8 @@ import type {
   CombinedReducer as ReduxCombinedReducer,
 } from 'redux';
 
+import type { PersistState } from 'redux-persist/src/types';
+
 export type Reducers = {
   router: ReduxReducer<>,
   slides: ReduxReducer<number, Action>,
@@ -18,6 +20,7 @@ export type SlidesState = Array<Slide>;
 
 export type State = {
   +slides: SlidesState,
+  _persist: PersistState,
 };
 
 export type Action = {

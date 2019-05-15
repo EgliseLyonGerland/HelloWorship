@@ -258,6 +258,7 @@
     "devtron": "1.4.0",
     "electron-debug": "2.2.0",
     "electron-log": "3.0.5",
+    "electron-store": "3.2.0",
     "electron-updater": "4.0.6",
     "history": "4.9.0",
     "lodash": "4.17.11",
@@ -268,6 +269,7 @@
     "react-router": "5.0.0",
     "react-router-dom": "5.0.0",
     "redux": "4.0.1",
+    "redux-persist": "6.0.0-pre1",
     "redux-thunk": "2.3.0",
     "source-map-support": "0.5.12",
     "uuid": "3.3.2"
