@@ -7,16 +7,18 @@
 import webpack from 'webpack';
 import path from 'path';
 import merge from 'webpack-merge';
-import baseConfig from './webpack.config.base';
-import { dependencies } from '../package.json';
-import CheckNodeEnv from '../internals/scripts/CheckNodeEnv';
+import baseConfig from './base';
+import { dependencies } from '../../package.json';
+import CheckNodeEnv from '../../internals/scripts/CheckNodeEnv';
 
 CheckNodeEnv('development');
 
-const dist = path.join(__dirname, '..', 'dll');
+const rootPath = path.join(__dirname, '/../..');
+const appPath = path.join(rootPath, '/app');
+const dllPath = path.join(rootPath, '/dll');
 
 export default merge.smart(baseConfig, {
-  context: path.join(__dirname, '..'),
+  context: rootPath,
 
   devtool: 'eval',
 
@@ -29,7 +31,7 @@ export default merge.smart(baseConfig, {
   /**
    * Use `module` from `webpack.config.renderer.dev.js`
    */
-  module: require('./webpack.config.renderer.dev.babel').default.module,
+  module: require('./renderer.dev.babel').default.module,
 
   entry: {
     renderer: Object.keys(dependencies || {}),
@@ -37,14 +39,14 @@ export default merge.smart(baseConfig, {
 
   output: {
     library: 'renderer',
-    path: dist,
+    path: dllPath,
     filename: '[name].dev.dll.js',
     libraryTarget: 'var',
   },
 
   plugins: [
     new webpack.DllPlugin({
-      path: path.join(dist, '[name].json'),
+      path: path.join(dllPath, '[name].json'),
       name: '[name]',
     }),
 
@@ -64,9 +66,9 @@ export default merge.smart(baseConfig, {
     new webpack.LoaderOptionsPlugin({
       debug: true,
       options: {
-        context: path.join(__dirname, '..', 'app'),
+        context: appPath,
         output: {
-          path: path.join(__dirname, '..', 'dll'),
+          path: dllPath,
         },
       },
     }),

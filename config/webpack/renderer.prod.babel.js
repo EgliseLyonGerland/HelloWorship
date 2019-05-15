@@ -9,10 +9,13 @@ import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import merge from 'webpack-merge';
 import TerserPlugin from 'terser-webpack-plugin';
-import baseConfig from './webpack.config.base';
-import CheckNodeEnv from '../internals/scripts/CheckNodeEnv';
+import baseConfig from './base';
+import CheckNodeEnv from '../../internals/scripts/CheckNodeEnv';
 
 CheckNodeEnv('production');
+
+const appPath = path.join(__dirname, '/../../app');
+
 export default merge.smart(baseConfig, {
   devtool: 'source-map',
 
@@ -20,10 +23,10 @@ export default merge.smart(baseConfig, {
 
   target: 'electron-renderer',
 
-  entry: path.join(__dirname, '..', 'app/index'),
+  entry: path.join(appPath, '/index'),
 
   output: {
-    path: path.join(__dirname, '..', 'app/dist'),
+    path: path.join(appPath, '/dist'),
     publicPath: './dist/',
     filename: 'renderer.prod.js',
   },

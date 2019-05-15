@@ -4,7 +4,9 @@
 
 import path from 'path';
 import webpack from 'webpack';
-import { dependencies } from '../package.json';
+import { dependencies } from '../../package.json';
+
+const appPath = path.join(__dirname, '/../../app');
 
 export default {
   externals: [...Object.keys(dependencies || {})],
@@ -25,7 +27,7 @@ export default {
   },
 
   output: {
-    path: path.join(__dirname, '..', 'app'),
+    path: appPath,
     // https://github.com/webpack/webpack/issues/1114
     libraryTarget: 'commonjs2',
   },
@@ -35,7 +37,7 @@ export default {
    */
   resolve: {
     extensions: ['.js', '.jsx', '.json'],
-    modules: [path.resolve(__dirname, '../app'), 'node_modules'],
+    modules: [appPath, 'node_modules'],
   },
 
   plugins: [

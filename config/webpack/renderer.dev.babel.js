@@ -13,15 +13,18 @@ import webpack from 'webpack';
 import chalk from 'chalk';
 import merge from 'webpack-merge';
 import { spawn, execSync } from 'child_process';
-import baseConfig from './webpack.config.base';
-import CheckNodeEnv from '../internals/scripts/CheckNodeEnv';
+import baseConfig from './base';
+import CheckNodeEnv from '../../internals/scripts/CheckNodeEnv';
 
 CheckNodeEnv('development');
 
+const rootPath = path.join(__dirname, '/../..');
+const dllPath = path.join(rootPath, '/dll');
+const distPath = path.join(rootPath, '/app/dist');
+
 const port = process.env.PORT || 1212;
 const publicPath = `http://localhost:${port}/dist`;
-const dll = path.join(__dirname, '..', 'dll');
-const manifest = path.resolve(dll, 'renderer.json');
+const manifest = path.resolve(dllPath, 'renderer.json');
 const requiredByDLLConfig = module.parent.filename.includes(
   'webpack.config.renderer.dev.dll',
 );
@@ -29,7 +32,10 @@ const requiredByDLLConfig = module.parent.filename.includes(
 /**
  * Warn if the DLL is not built
  */
-if (!requiredByDLLConfig && !(fs.existsSync(dll) && fs.existsSync(manifest))) {
+if (
+  !requiredByDLLConfig &&
+  !(fs.existsSync(dllPath) && fs.existsSync(manifest))
+) {
   console.log(
     chalk.black.bgYellow.bold(
       'The DLL files are missing. Sit back while we build them for you with "yarn build-dll"',
@@ -49,7 +55,7 @@ export default merge.smart(baseConfig, {
     'react-hot-loader/patch',
     `webpack-dev-server/client?http://localhost:${port}/`,
     'webpack/hot/only-dev-server',
-    require.resolve('../app/index'),
+    require.resolve('../../app/index'),
   ],
 
   output: {
@@ -161,7 +167,7 @@ export default merge.smart(baseConfig, {
     requiredByDLLConfig
       ? null
       : new webpack.DllReferencePlugin({
-          context: path.join(__dirname, '..', 'dll'),
+          context: dllPath,
           manifest: require(manifest),
           sourceType: 'var',
         }),
@@ -208,7 +214,7 @@ export default merge.smart(baseConfig, {
     lazy: false,
     hot: true,
     headers: { 'Access-Control-Allow-Origin': '*' },
-    contentBase: path.join(__dirname, 'dist'),
+    contentBase: distPath,
     watchOptions: {
       aggregateTimeout: 300,
       ignored: /node_modules/,
