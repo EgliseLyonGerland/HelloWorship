@@ -2,11 +2,14 @@
 import React from 'react';
 import { Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
+import classnames from 'classnames';
 import type { SlidesState } from 'redux/types';
 import PlusButton from './PlusButton';
 
 type Props = {
   slides: SlidesState,
+  currentSlideId: string,
+  onSlideClicked: (slideId: string) => {},
   onAddClicked: (position: number) => {},
 };
 
@@ -54,12 +57,15 @@ const useStyles = makeStyles(
       borderColor: 'rgba(255,255,255,0.7)',
       backgroundSize: 'cover',
     },
+    thumbnailImageActive: {
+      borderColor: '#F9B74F',
+    },
   },
   { name: 'SlidesNav' },
 );
 
 export default function SlidesNav(props: Props) {
-  const { slides, onAddClicked } = props;
+  const { slides, currentSlideId, onSlideClicked, onAddClicked } = props;
   const classes = useStyles();
 
   return (
@@ -73,13 +79,16 @@ export default function SlidesNav(props: Props) {
               <div className={classes.thumbnailPosition}>{index + 1}</div>
               <div className={classes.thumbnailImageWrapper}>
                 <Paper
-                  className={classes.thumbnailImage}
+                  className={classnames(classes.thumbnailImage, {
+                    [classes.thumbnailImageActive]: slide.id === currentSlideId,
+                  })}
                   elevation={3}
                   square
                   style={{
                     backgroundImage: `url(https://picsum.photos/id/${index +
                       10}/100/60)`,
                   }}
+                  onClick={() => onSlideClicked(slide.id)}
                 />
               </div>
             </div>

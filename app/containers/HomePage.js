@@ -3,22 +3,27 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Home from 'components/Home';
-import * as SlidesActions from 'redux/actions/slides';
-import type { SlidesState, Action } from 'redux/types';
+import * as slidesActions from 'redux/actions/slides';
+import * as currentSlideActions from 'redux/actions/currentSlide';
+import type { SlidesState, CurrentSlideState, Action } from 'redux/types';
 
 type Props = {
   slides: SlidesState,
+  currentSlide: CurrentSlideState,
   addDefaultSlide: number => Action,
+  setCurrentSlide: string => Action,
 };
 
 const mapStateToProps = state => ({
   slides: state.slides,
+  currentSlide: state.currentSlide,
 });
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     {
-      ...SlidesActions,
+      ...slidesActions,
+      ...currentSlideActions,
     },
     dispatch,
   );
@@ -33,14 +38,15 @@ class HomePage extends Component<Props> {
   props: Props;
 
   componentDidMount() {
-    this.avoirEmptySlides();
+    this.avoidEmptySlides();
+    this.ensureSelectedSlide();
   }
 
   componentDidUpdate() {
-    this.avoirEmptySlides();
+    this.avoidEmptySlides();
   }
 
-  avoirEmptySlides() {
+  avoidEmptySlides() {
     const { slides, addDefaultSlide } = this.props;
 
     if (slides.length === 0) {
@@ -48,13 +54,28 @@ class HomePage extends Component<Props> {
     }
   }
 
+  ensureSelectedSlide() {
+    const { slides, currentSlide, setCurrentSlide } = this.props;
+
+    if (slides.length && currentSlide === null) {
+      setCurrentSlide(slides[0].id);
+    }
+  }
+
   render() {
-    const { slides, addDefaultSlide } = this.props;
+    const {
+      slides,
+      currentSlide,
+      setCurrentSlide,
+      addDefaultSlide,
+    } = this.props;
 
     return (
       <Home
         slides={slides}
-        onAddSlideClicked={position => addDefaultSlide(position)}
+        currentSlide={currentSlide}
+        onSlideClicked={slideId => setCurrentSlide(slideId)}
+        onAddClicked={position => addDefaultSlide(position)}
       />
     );
   }

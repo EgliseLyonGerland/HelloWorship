@@ -17,6 +17,7 @@ export type CombinedReducer = ReduxCombinedReducer<Reducers, Action>;
 export type Slide = mixed;
 
 export type SlidesState = Array<Slide>;
+export type CurrentSlideState = string;
 
 export type State = {
   +slides: SlidesState,
