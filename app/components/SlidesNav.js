@@ -1,100 +1,92 @@
-import React, { Component } from 'react';
+// @flow
+import React from 'react';
 import { Paper } from '@material-ui/core';
-import { styled } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles';
 import type { SlidesState } from 'redux/types';
+import PlusButton from './PlusButton';
 
 type Props = {
   slides: SlidesState,
+  onAddClicked: (position: number) => {},
 };
 
-const Wrapper = styled('div')({
-  position: 'relative',
-  width: '100%',
-  height: '100%',
+const useStyles = makeStyles(
+  {
+    root: {
+      position: 'relative',
+      width: '100%',
+      height: '100%',
 
-  '&:after': {
-    content: '""',
-    position: 'absolute',
-    height: '70%',
-    width: 1,
-    right: 1,
-    top: '15%',
-    backgroundImage:
-      'linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%)',
+      '&:after': {
+        content: '""',
+        position: 'absolute',
+        height: '70%',
+        width: 1,
+        right: 1,
+        top: '15%',
+        backgroundImage:
+          'linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%)',
+      },
+    },
+    inner: {
+      maxHeight: '100%',
+      overflowY: 'auto',
+      padding: [[0, 24, 24, 0]],
+    },
+    thumbnailWrapper: {
+      display: 'flex',
+      alignItems: 'flex-end',
+    },
+    thumbnailPosition: {
+      width: 32,
+      paddingRight: 8,
+      textAlign: 'right',
+      fontSize: '0.75em',
+      color: 'rgba(255,255,255,0.7)',
+    },
+    thumbnailImageWrapper: {
+      flexGrow: 1,
+      cursor: 'pointer',
+    },
+    thumbnailImage: {
+      paddingBottom: '56.25%',
+      border: [['solid', 1]],
+      borderColor: 'rgba(255,255,255,0.7)',
+      backgroundSize: 'cover',
+    },
   },
-});
-
-const Inner = styled('div')({
-  maxHeight: '100%',
-  overflowY: 'auto',
-  padding: [[24, 24, 24, 0]],
-});
-
-const ThumbnailWrapper = styled('div')({
-  display: 'flex',
-  alignItems: 'flex-end',
-  marginBottom: 24,
-
-  '&:last-child': {
-    marginBottom: 0,
-  },
-});
-
-const ThumbnailPosition = styled('div')({
-  width: 32,
-  paddingRight: 8,
-  textAlign: 'right',
-  fontSize: '0.75em',
-  color: 'rgba(255,255,255,0.7)',
-});
-
-const ThumbnailImageWrapper = styled('div')({
-  flexGrow: 1,
-  cursor: 'pointer',
-  transition: 'transform .2s',
-
-  '&:hover': {
-    transform: 'translateX(5px)',
-    transition: 'transform .2s .1s',
-  },
-});
-
-const ThumbnailImage = styled(({ active, ...rest }) => <Paper {...rest} />)(
-  ({ active }) => ({
-    paddingBottom: '56.25%',
-    border: [['solid', 1]],
-    borderColor: active ? '#F9B74F' : 'rgba(255,255,255,0.7)',
-    backgroundSize: 'cover',
-  }),
+  { name: 'SlidesNav' },
 );
 
-export default class SlidesNav extends Component<Props> {
-  props: Props;
+export default function SlidesNav(props: Props) {
+  const { slides, onAddClicked } = props;
+  const classes = useStyles();
 
-  render() {
-    const { slides } = this.props;
+  return (
+    <div className={classes.root}>
+      <div className={classes.inner}>
+        <PlusButton onClick={() => onAddClicked(0)} />
 
-    return (
-      <Wrapper>
-        <Inner>
-          {slides.map((slide, index) => (
-            <ThumbnailWrapper key={slide.id}>
-              <ThumbnailPosition>{index + 1}</ThumbnailPosition>
-              <ThumbnailImageWrapper>
-                <ThumbnailImage
+        {slides.map((slide, index) => (
+          <div key={slide.id}>
+            <div className={classes.thumbnailWrapper}>
+              <div className={classes.thumbnailPosition}>{index + 1}</div>
+              <div className={classes.thumbnailImageWrapper}>
+                <Paper
+                  className={classes.thumbnailImage}
                   elevation={3}
                   square
-                  active={index === 3}
                   style={{
                     backgroundImage: `url(https://picsum.photos/id/${index +
                       10}/100/60)`,
                   }}
                 />
-              </ThumbnailImageWrapper>
-            </ThumbnailWrapper>
-          ))}
-        </Inner>
-      </Wrapper>
-    );
-  }
+              </div>
+            </div>
+            <PlusButton onClick={() => onAddClicked(index + 1)} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }

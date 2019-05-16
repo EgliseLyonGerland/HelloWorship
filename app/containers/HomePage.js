@@ -3,12 +3,12 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Home from 'components/Home';
-import type { SlidesState } from 'redux/types';
 import * as SlidesActions from 'redux/actions/slides';
+import type { SlidesState, Action } from 'redux/types';
 
 type Props = {
   slides: SlidesState,
-  addDefaultSlide: () => mixed,
+  addDefaultSlide: number => Action,
 };
 
 const mapStateToProps = state => ({
@@ -44,13 +44,18 @@ class HomePage extends Component<Props> {
     const { slides, addDefaultSlide } = this.props;
 
     if (slides.length === 0) {
-      addDefaultSlide();
+      addDefaultSlide(0);
     }
   }
 
   render() {
-    const { slides } = this.props;
+    const { slides, addDefaultSlide } = this.props;
 
-    return <Home slides={slides} />;
+    return (
+      <Home
+        slides={slides}
+        onAddSlideClicked={position => addDefaultSlide(position)}
+      />
+    );
   }
 }

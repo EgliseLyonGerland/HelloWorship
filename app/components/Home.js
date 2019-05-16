@@ -9,6 +9,7 @@ import type { SlidesState } from 'redux/types';
 
 type Props = {
   slides: SlidesState,
+  onAddSlideClicked: (position: number) => {},
 };
 
 const Wrapper = styled('div')({
@@ -62,7 +63,7 @@ export default class Home extends Component<Props> {
   props: Props;
 
   render() {
-    const { slides } = this.props;
+    const { slides, onAddSlideClicked } = this.props;
 
     return (
       <Wrapper data-tid="container">
@@ -71,7 +72,7 @@ export default class Home extends Component<Props> {
         </HeaderWrapper>
         <ContentWrapper>
           <SlidesNavWrapper>
-            <SlidesNav slides={slides} />
+            <SlidesNav slides={slides} onAddClicked={onAddSlideClicked} />
           </SlidesNavWrapper>
           <CurrentSlideWrapper>
             <CurrentSlide elevation={10} square>
