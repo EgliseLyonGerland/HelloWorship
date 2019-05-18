@@ -5,6 +5,7 @@ import { styled } from '@material-ui/styles';
 import Header from 'components/Header';
 import Slide from 'components/Slide';
 import SlidesNav from 'components/SlidesNav';
+import Box16x9 from 'components/Box16x9';
 import type { SlidesState } from 'redux/types';
 
 type Props = {
@@ -29,34 +30,37 @@ const ContentWrapper = styled('div')({
   overflow: 'hidden',
 });
 
-const SlidesNavWrapper = styled('div')({
+const LeftPart = styled('div')({
   width: 136,
+  minWidth: 136,
 });
 
-const CurrentSlideWrapper = styled('div')(({ theme }) => ({
+const MiddlePart = styled('div')({
   flexGrow: 1,
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
-  padding: '8vw',
+  padding: [[40, '4vw']],
+});
 
-  [theme.breakpoints.down('lg')]: {
-    padding: '4vw',
-  },
-}));
+const CurrentSlideWrapper = styled('div')({
+  flexGrow: 1,
+});
 
 const CurrentSlide = styled(Paper)({
-  border: [['solid', 1, 'white']],
+  border: [['solid', 1, 'rgba(255,255,255,0.7)']],
 });
 
 const CurrentSlideActions = styled('div')({
-  marginTop: 32,
-  display: 'flex',
-  justifyContent: 'center',
+  paddingTop: 32,
+  flexGrow: 0.1,
+  margin: 'auto',
+  minHeight: 56,
 });
 
-const SettingsWrapper = styled('div')(({ theme: { palette } }) => ({
+const RightPart = styled('div')(({ theme: { palette } }) => ({
   width: 400,
+  minWidth: 400,
   padding: 32,
   borderLeft: `solid 1px ${palette.primary.dark}`,
 }));
@@ -73,25 +77,30 @@ export default class Home extends Component<Props> {
           <Header />
         </HeaderWrapper>
         <ContentWrapper>
-          <SlidesNavWrapper>
+          <LeftPart>
             <SlidesNav
               slides={slides}
               currentSlideId={currentSlide}
               onSlideClicked={onSlideClicked}
               onAddClicked={onAddClicked}
             />
-          </SlidesNavWrapper>
-          <CurrentSlideWrapper>
-            <CurrentSlide elevation={10} square>
-              <Slide />
-            </CurrentSlide>
+          </LeftPart>
+          <MiddlePart>
+            <CurrentSlideActions />
+            <CurrentSlideWrapper>
+              <Box16x9>
+                <CurrentSlide elevation={10} square>
+                  <Slide />
+                </CurrentSlide>
+              </Box16x9>
+            </CurrentSlideWrapper>
             <CurrentSlideActions>
               <Button variant="outlined" size="small" color="inherit">
                 Edit
               </Button>
             </CurrentSlideActions>
-          </CurrentSlideWrapper>
-          <SettingsWrapper>
+          </MiddlePart>
+          <RightPart>
             <TextField
               variant="filled"
               label="Foobar"
@@ -105,7 +114,7 @@ export default class Home extends Component<Props> {
               multiline
               fullWidth
             />
-          </SettingsWrapper>
+          </RightPart>
         </ContentWrapper>
       </Wrapper>
     );
