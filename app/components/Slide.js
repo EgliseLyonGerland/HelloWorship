@@ -1,27 +1,32 @@
+// @flow
 import React, { Component } from 'react';
 import { styled } from '@material-ui/styles';
 import get from 'lodash/get';
 import templates from 'templates/';
+import backgrounds from 'images/backgrounds';
+import type { SlideState } from 'redux/types';
+
+type Props = {
+  slide: SlideState,
+};
+
+type State = {
+  scale: number,
+  display: boolean,
+};
 
 const width = 1920;
 const height = 1080;
-
-const slide = {
-  templateId: 'e5c6a5d1-f196-4e59-bee2-dfed87257646',
-  data: {
-    title: 'Hello World!',
-  },
-};
 
 const Wrapper = styled('div')({
   position: 'relative',
 });
 
-const Background = styled('div')({
+const Background = styled('div')(({ src }) => ({
   paddingTop: '56.25%',
   backgroundSize: 'cover',
-  backgroundImage: 'url(https://picsum.photos/id/13/500/300)',
-});
+  backgroundImage: `url(${src})`,
+}));
 
 const Elements = styled(({ scale, display, ...rest }) => <div {...rest} />)(
   ({ scale, display }) => ({
@@ -40,12 +45,44 @@ const Element = styled('div')({
   position: 'absolute',
 });
 
-export default class Slide extends Component {
-  static getValue(name) {
+export default class Slide extends Component<Props, State> {
+  props: Props;
+
+  state: State = {
+    scale: 1,
+    display: false,
+  };
+
+  componentDidMount() {
+    this.updateScale();
+  }
+
+  componentWillReceiveProps() {
+    this.updateScale();
+  }
+
+  wrapper: {
+    current: null | HTMLDivElement,
+  } = React.createRef();
+
+  updateScale() {
+    if (!this.wrapper.current) {
+      return;
+    }
+
+    this.setState({
+      scale: this.wrapper.current.offsetWidth / width,
+      display: true,
+    });
+  }
+
+  getValue(name: string) {
+    const { slide } = this.props;
+
     return get(slide.data, name, '');
   }
 
-  static renderText({
+  renderText({
     key,
     fontSize = 20,
     fontWeight = 500,
@@ -53,9 +90,17 @@ export default class Slide extends Component {
     right = 'auto',
     bottom = 'auto',
     left = 'auto',
+  }: {
+    key: string,
+    fontSize: number,
+    fontWeight: number,
+    top: 'auto',
+    right: 'auto',
+    bottom: 'auto',
+    left: 'auto',
   }) {
     const transform = 'translate(-50%, -50%)';
-    const value = Slide.getValue(key);
+    const value = this.getValue(key);
 
     return (
       <Element
@@ -67,41 +112,27 @@ export default class Slide extends Component {
     );
   }
 
-  state = {
-    scale: 1,
-    display: false,
-  };
-
-  componentDidMount() {
-    this.updateScale();
-  }
-
-  updateScale() {
-    this.setState({
-      scale: this.wrapper.offsetWidth / width,
-      display: true,
-    });
-  }
-
   render() {
     const { scale, display } = this.state;
-    const { templateId } = slide;
+    const { slide } = this.props;
 
+    if (!slide) {
+      return null;
+    }
+
+    const { templateId, backgroundId } = slide;
     const template = templates[templateId];
+    const background = backgrounds[backgroundId];
 
     return (
-      <Wrapper
-        ref={elt => {
-          this.wrapper = elt;
-        }}
-      >
-        <Background />
+      <Wrapper ref={this.wrapper}>
+        <Background src={background} />
 
         <Elements scale={scale} display={display}>
           {template.elements.map(element => {
             switch (element.type) {
               case 'text':
-                return Slide.renderText(element);
+                return this.renderText(element);
               default:
                 return null;
             }

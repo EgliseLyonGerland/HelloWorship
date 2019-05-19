@@ -8,7 +8,7 @@ export default function currentSlide(
 ) {
   switch (action.type) {
     case CURRENT_SLIDE_SET:
-      return action.slideId;
+      return { ...action.slide };
     default:
       return state;
   }

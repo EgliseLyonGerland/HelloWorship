@@ -90,7 +90,7 @@ export default class Home extends Component<Props> {
             <CurrentSlideWrapper>
               <Box16x9>
                 <CurrentSlide elevation={10} square>
-                  <Slide />
+                  <Slide slide={currentSlide} />
                 </CurrentSlide>
               </Box16x9>
             </CurrentSlideWrapper>

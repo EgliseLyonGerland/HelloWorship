@@ -3,6 +3,7 @@ import React from 'react';
 import { Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import classnames from 'classnames';
+import backgrounds from 'images/backgrounds';
 import type { SlidesState } from 'redux/types';
 import PlusButton from './PlusButton';
 
@@ -73,28 +74,32 @@ export default function SlidesNav(props: Props) {
       <div className={classes.inner}>
         <PlusButton onClick={() => onAddClicked(0)} />
 
-        {slides.map((slide, index) => (
-          <div key={slide.id}>
-            <div className={classes.thumbnailWrapper}>
-              <div className={classes.thumbnailPosition}>{index + 1}</div>
-              <div className={classes.thumbnailImageWrapper}>
-                <Paper
-                  className={classnames(classes.thumbnailImage, {
-                    [classes.thumbnailImageActive]: slide.id === currentSlideId,
-                  })}
-                  elevation={3}
-                  square
-                  style={{
-                    backgroundImage: `url(https://picsum.photos/id/${index +
-                      10}/100/60)`,
-                  }}
-                  onClick={() => onSlideClicked(slide.id)}
-                />
+        {slides.map((slide, index) => {
+          const background = backgrounds[slide.backgroundId];
+
+          return (
+            <div key={slide.id}>
+              <div className={classes.thumbnailWrapper}>
+                <div className={classes.thumbnailPosition}>{index + 1}</div>
+                <div className={classes.thumbnailImageWrapper}>
+                  <Paper
+                    className={classnames(classes.thumbnailImage, {
+                      [classes.thumbnailImageActive]:
+                        slide.id === currentSlideId,
+                    })}
+                    elevation={3}
+                    square
+                    style={{
+                      backgroundImage: `url(${background})`,
+                    }}
+                    onClick={() => onSlideClicked(slide.id)}
+                  />
+                </div>
               </div>
+              <PlusButton onClick={() => onAddClicked(index + 1)} />
             </div>
-            <PlusButton onClick={() => onAddClicked(index + 1)} />
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

@@ -14,10 +14,17 @@ export type Reducers = {
 
 export type CombinedReducer = ReduxCombinedReducer<Reducers, Action>;
 
-export type Slide = mixed;
+export type Slide = {
+  templateId: string,
+  backgroundId: string,
+  data: {
+    [string]: number,
+  },
+};
 
 export type SlidesState = Array<Slide>;
-export type CurrentSlideState = string;
+
+export type CurrentSlideState = Slide;
 
 export type State = {
   +slides: SlidesState,
