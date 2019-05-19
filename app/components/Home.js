@@ -80,7 +80,7 @@ export default class Home extends Component<Props> {
           <LeftPart>
             <SlidesNav
               slides={slides}
-              currentSlideId={currentSlide}
+              currentSlide={currentSlide}
               onSlideClicked={onSlideClicked}
               onAddClicked={onAddClicked}
             />

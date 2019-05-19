@@ -4,12 +4,12 @@ import { Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import classnames from 'classnames';
 import backgrounds from 'images/backgrounds';
-import type { SlidesState } from 'redux/types';
+import type { SlidesState, Slide } from 'redux/types';
 import PlusButton from './PlusButton';
 
 type Props = {
   slides: SlidesState,
-  currentSlideId: string,
+  currentSlide: Slide,
   onSlideClicked: (slideId: string) => {},
   onAddClicked: (position: number) => {},
 };
@@ -66,7 +66,7 @@ const useStyles = makeStyles(
 );
 
 export default function SlidesNav(props: Props) {
-  const { slides, currentSlideId, onSlideClicked, onAddClicked } = props;
+  const { slides, currentSlide, onSlideClicked, onAddClicked } = props;
   const classes = useStyles();
 
   return (
@@ -74,32 +74,28 @@ export default function SlidesNav(props: Props) {
       <div className={classes.inner}>
         <PlusButton onClick={() => onAddClicked(0)} />
 
-        {slides.map((slide, index) => {
-          const background = backgrounds[slide.backgroundId];
-
-          return (
-            <div key={slide.id}>
-              <div className={classes.thumbnailWrapper}>
-                <div className={classes.thumbnailPosition}>{index + 1}</div>
-                <div className={classes.thumbnailImageWrapper}>
-                  <Paper
-                    className={classnames(classes.thumbnailImage, {
-                      [classes.thumbnailImageActive]:
-                        slide.id === currentSlideId,
-                    })}
-                    elevation={3}
-                    square
-                    style={{
-                      backgroundImage: `url(${background})`,
-                    }}
-                    onClick={() => onSlideClicked(slide.id)}
-                  />
-                </div>
+        {slides.map((slide, index) => (
+          <div key={slide.id}>
+            <div className={classes.thumbnailWrapper}>
+              <div className={classes.thumbnailPosition}>{index + 1}</div>
+              <div className={classes.thumbnailImageWrapper}>
+                <Paper
+                  className={classnames(classes.thumbnailImage, {
+                    [classes.thumbnailImageActive]:
+                      slide.id === (currentSlide && currentSlide.id),
+                  })}
+                  elevation={3}
+                  square
+                  style={{
+                    backgroundImage: `url(${backgrounds[slide.backgroundId]})`,
+                  }}
+                  onClick={() => onSlideClicked(slide.id)}
+                />
               </div>
-              <PlusButton onClick={() => onAddClicked(index + 1)} />
             </div>
-          );
-        })}
+            <PlusButton onClick={() => onAddClicked(index + 1)} />
+          </div>
+        ))}
       </div>
     </div>
   );
