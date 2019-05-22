@@ -28,15 +28,14 @@ const Background = styled('div')(({ src }) => ({
   backgroundImage: `url(${src})`,
 }));
 
-const Elements = styled(({ scale, display, ...rest }) => <div {...rest} />)(
-  ({ scale, display }) => ({
+const Elements = styled(({ display, ...rest }) => <div {...rest} />)(
+  ({ display }) => ({
     display: display ? 'block' : 'none',
     position: 'absolute',
     top: 0,
     left: 0,
     width,
     height,
-    transform: `scale(${scale})`,
     transformOrigin: 'top left',
   }),
 );
@@ -76,10 +75,19 @@ export default class Slide extends Component<Props, State> {
     });
   }
 
+  getTemplate() {
+    const { slide } = this.props;
+    const { templateId } = slide;
+
+    return templates[templateId];
+  }
+
   getValue(name: string) {
     const { slide } = this.props;
+    const template = this.getTemplate();
+    const placeholder = get(template.form, [name, 'placeholder'], '');
 
-    return get(slide.data, name, '');
+    return get(slide.data, name, placeholder);
   }
 
   renderText({
@@ -112,32 +120,38 @@ export default class Slide extends Component<Props, State> {
     );
   }
 
-  render() {
+  renderElements() {
     const { scale, display } = this.state;
+    const template = this.getTemplate();
+
+    return (
+      <Elements display={display} style={{ transform: `scale(${scale})` }}>
+        {template.elements.map(element => {
+          switch (element.type) {
+            case 'text':
+              return this.renderText(element);
+            default:
+              return null;
+          }
+        })}
+      </Elements>
+    );
+  }
+
+  render() {
     const { slide } = this.props;
 
     if (!slide) {
       return null;
     }
 
-    const { templateId, backgroundId } = slide;
-    const template = templates[templateId];
+    const { backgroundId } = slide;
     const background = backgrounds[backgroundId];
 
     return (
       <Wrapper ref={this.wrapper}>
         <Background src={background} />
-
-        <Elements scale={scale} display={display}>
-          {template.elements.map(element => {
-            switch (element.type) {
-              case 'text':
-                return this.renderText(element);
-              default:
-                return null;
-            }
-          })}
-        </Elements>
+        {this.renderElements()}
       </Wrapper>
     );
   }
