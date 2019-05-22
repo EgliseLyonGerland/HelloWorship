@@ -1,5 +1,6 @@
 // @flow
-import React, { Component } from 'react';
+import React from 'react';
+import { hot } from 'react-hot-loader/root';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { CssBaseline, createMuiTheme } from '@material-ui/core';
@@ -27,20 +28,19 @@ const theme = createMuiTheme({
   },
 });
 
-export default class Root extends Component<Props> {
-  render() {
-    const { store, history, persistor } = this.props;
-    return (
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <ConnectedRouter history={history}>
-            <ThemeProvider theme={theme}>
-              <CssBaseline />
-              <Routes />
-            </ThemeProvider>
-          </ConnectedRouter>
-        </PersistGate>
-      </Provider>
-    );
-  }
-}
+export default hot((props: Props) => {
+  const { store, history, persistor } = props;
+
+  return (
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <ConnectedRouter history={history}>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Routes />
+          </ThemeProvider>
+        </ConnectedRouter>
+      </PersistGate>
+    </Provider>
+  );
+});
