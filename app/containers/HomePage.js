@@ -12,6 +12,7 @@ type Props = {
   currentSlide: CurrentSlideState,
   addDefaultSlide: number => Action,
   setCurrentSlide: string => Action,
+  updateCurrentSlideField: (name: string, value: mixed) => Action,
 };
 
 const mapStateToProps = state => ({
@@ -68,14 +69,16 @@ class HomePage extends Component<Props> {
       currentSlide,
       setCurrentSlide,
       addDefaultSlide,
+      updateCurrentSlideField,
     } = this.props;
 
     return (
       <Home
         slides={slides}
         currentSlide={currentSlide}
-        onSlideClicked={slideId => setCurrentSlide(slideId)}
-        onAddClicked={position => addDefaultSlide(position)}
+        onSlideClicked={setCurrentSlide}
+        onAddClicked={addDefaultSlide}
+        onCurrentSlideFieldChange={updateCurrentSlideField}
       />
     );
   }

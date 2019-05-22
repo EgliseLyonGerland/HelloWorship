@@ -1,11 +1,12 @@
 // @flow
 import React, { Component } from 'react';
-import { TextField, Paper, Button } from '@material-ui/core';
+import { Paper, Button } from '@material-ui/core';
 import { styled } from '@material-ui/styles';
 import Header from 'components/Header';
 import Slide from 'components/Slide';
 import SlidesNav from 'components/SlidesNav';
 import Box16x9 from 'components/Box16x9';
+import SlideForm from 'components/SlideForm';
 import type { SlidesState } from 'redux/types';
 
 type Props = {
@@ -13,6 +14,7 @@ type Props = {
   currentSlide: string,
   onSlideClicked: (slideId: string) => {},
   onAddClicked: (position: number) => {},
+  onCurrentSlideFieldChange: (name: string, value: mixed) => {},
 };
 
 const Wrapper = styled('div')({
@@ -69,7 +71,13 @@ export default class Home extends Component<Props> {
   props: Props;
 
   render() {
-    const { slides, currentSlide, onSlideClicked, onAddClicked } = this.props;
+    const {
+      slides,
+      currentSlide,
+      onSlideClicked,
+      onAddClicked,
+      onCurrentSlideFieldChange,
+    } = this.props;
 
     return (
       <Wrapper data-tid="container">
@@ -101,18 +109,9 @@ export default class Home extends Component<Props> {
             </CurrentSlideActions>
           </MiddlePart>
           <RightPart>
-            <TextField
-              variant="filled"
-              label="Foobar"
-              margin="normal"
-              fullWidth
-            />
-            <TextField
-              variant="filled"
-              label="Foobar"
-              margin="normal"
-              multiline
-              fullWidth
+            <SlideForm
+              slide={currentSlide}
+              onFieldChange={onCurrentSlideFieldChange}
             />
           </RightPart>
         </ContentWrapper>

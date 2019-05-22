@@ -9,11 +9,27 @@ export default {
       top: '50%',
       left: '50%',
     },
+    {
+      key: 'baseline',
+      type: 'text',
+      fontSize: 60,
+      fontWeight: 400,
+      top: '60%',
+      left: '50%',
+    },
   ],
   form: {
     title: {
       type: 'text',
+      label: 'Title',
       placeholder: 'Lorem ipsum',
+    },
+    baseline: {
+      type: 'text',
+      label: 'Baseline',
+      multiline: true,
+      placeholder:
+        'Interdum et malesuada fames ac ante ipsum primis in faucibus',
     },
   },
 };
