@@ -16,13 +16,18 @@ type Props = {
   persistor: Persistor,
 };
 
+const primary = {
+  light: '#5c5766',
+  main: '#322E3C',
+  dark: '#25222B',
+};
+
 const theme = createMuiTheme({
   palette: {
-    primary: {
-      main: '#322E3C',
-    },
+    primary,
     background: {
-      default: '#322E3C',
+      default: primary.main,
+      paper: primary.dark,
     },
     type: 'dark',
   },
