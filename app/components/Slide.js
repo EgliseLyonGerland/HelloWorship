@@ -69,10 +69,12 @@ export default class Slide extends Component<Props, State> {
       return;
     }
 
-    this.setState({
-      scale: this.wrapper.current.offsetWidth / width,
-      display: true,
-    });
+    setTimeout(() => {
+      this.setState({
+        scale: this.wrapper.current.offsetWidth / width,
+        display: true,
+      });
+    }, 0);
   }
 
   getTemplate() {
@@ -87,7 +89,7 @@ export default class Slide extends Component<Props, State> {
     const template = this.getTemplate();
     const placeholder = get(template.form, [name, 'placeholder'], '');
 
-    return get(slide.data, name, placeholder);
+    return get(slide.data, name) || placeholder;
   }
 
   renderText({
