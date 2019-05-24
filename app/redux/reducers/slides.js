@@ -1,5 +1,5 @@
 // @flow
-import { SLIDES_ADD } from 'redux/actions/slides';
+import { SLIDES_ADD, SLIDES_REPLACE } from 'redux/actions/slides';
 import type { Action, SlidesState } from '../types';
 
 export default function slides(state: SlidesState = [], action: Action) {
@@ -8,6 +8,16 @@ export default function slides(state: SlidesState = [], action: Action) {
       state.splice(action.position, 0, action.slide);
 
       return [...state];
+    case SLIDES_REPLACE:
+      return [
+        ...state.map(slide => {
+          if (action.slide.id === slide.id) {
+            return action.slide;
+          }
+
+          return slide;
+        }),
+      ];
     default:
       return state;
   }

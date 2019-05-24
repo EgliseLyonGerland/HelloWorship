@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React from 'react';
 import { Paper, Button } from '@material-ui/core';
 import { styled } from '@material-ui/styles';
 import Header from 'components/Header';
@@ -7,13 +7,15 @@ import Slide from 'components/Slide';
 import SlidesNav from 'components/SlidesNav';
 import Box16x9 from 'components/Box16x9';
 import SlideForm from 'components/SlideForm';
-import type { SlidesState } from 'redux/types';
+import type { SlidesState, CurrentSlideState } from 'redux/types';
 
 type Props = {
   slides: SlidesState,
-  currentSlide: string,
+  currentSlide: CurrentSlideState,
   onSlideClicked: (slideId: string) => {},
   onAddClicked: (position: number) => {},
+  onEditClicked: () => {},
+  onDoneClicked: () => {},
   onCurrentSlideFieldChange: (name: string, value: mixed) => {},
 };
 
@@ -67,55 +69,75 @@ const RightPart = styled('div')(({ theme: { palette } }) => ({
   borderLeft: `solid 1px ${palette.primary.dark}`,
 }));
 
-export default class Home extends Component<Props> {
-  props: Props;
+export default function(props: Props) {
+  const {
+    slides,
+    currentSlide,
+    onSlideClicked,
+    onAddClicked,
+    onEditClicked,
+    onDoneClicked,
+    onCurrentSlideFieldChange,
+  } = props;
 
-  render() {
-    const {
-      slides,
-      currentSlide,
-      onSlideClicked,
-      onAddClicked,
-      onCurrentSlideFieldChange,
-    } = this.props;
+  if (!currentSlide) {
+    return null;
+  }
 
-    return (
-      <Wrapper data-tid="container">
-        <HeaderWrapper>
-          <Header />
-        </HeaderWrapper>
-        <ContentWrapper>
-          <LeftPart>
-            <SlidesNav
-              slides={slides}
-              currentSlide={currentSlide}
-              onSlideClicked={onSlideClicked}
-              onAddClicked={onAddClicked}
-            />
-          </LeftPart>
-          <MiddlePart>
-            <CurrentSlideActions />
-            <CurrentSlideWrapper>
-              <Box16x9>
-                <CurrentSlide elevation={10} square>
-                  <Slide slide={currentSlide} />
-                </CurrentSlide>
-              </Box16x9>
-            </CurrentSlideWrapper>
-            <CurrentSlideActions>
-              <Button variant="outlined" size="small" color="inherit">
+  return (
+    <Wrapper data-tid="container">
+      <HeaderWrapper>
+        <Header />
+      </HeaderWrapper>
+      <ContentWrapper>
+        <LeftPart>
+          <SlidesNav
+            slides={slides}
+            currentSlide={currentSlide}
+            onSlideClicked={onSlideClicked}
+            onAddClicked={onAddClicked}
+          />
+        </LeftPart>
+        <MiddlePart>
+          <CurrentSlideActions />
+          <CurrentSlideWrapper>
+            <Box16x9>
+              <CurrentSlide elevation={10} square>
+                <Slide slide={currentSlide} />
+              </CurrentSlide>
+            </Box16x9>
+          </CurrentSlideWrapper>
+          <CurrentSlideActions>
+            {!currentSlide.edit ? (
+              <Button
+                variant="outlined"
+                size="small"
+                color="inherit"
+                onClick={onEditClicked}
+              >
                 Edit
               </Button>
-            </CurrentSlideActions>
-          </MiddlePart>
-          <RightPart>
+            ) : (
+              <Button
+                variant="outlined"
+                size="small"
+                color="inherit"
+                onClick={onDoneClicked}
+              >
+                Done
+              </Button>
+            )}
+          </CurrentSlideActions>
+        </MiddlePart>
+        <RightPart>
+          {currentSlide.edit && (
             <SlideForm
               slide={currentSlide}
               onFieldChange={onCurrentSlideFieldChange}
             />
-          </RightPart>
-        </ContentWrapper>
-      </Wrapper>
-    );
-  }
+          )}
+        </RightPart>
+      </ContentWrapper>
+    </Wrapper>
+  );
 }

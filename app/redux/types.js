@@ -24,7 +24,9 @@ export type Slide = {
 
 export type SlidesState = Array<Slide>;
 
-export type CurrentSlideState = Slide;
+export type CurrentSlideState = Slide & {
+  edit: boolean,
+};
 
 export type State = {
   +slides: SlidesState,

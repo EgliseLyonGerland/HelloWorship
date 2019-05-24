@@ -1,5 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
+import createSagaMiddleware from 'redux-saga';
 import { createHashHistory } from 'history';
 import { routerMiddleware, routerActions } from 'connected-react-router';
 import { createLogger } from 'redux-logger';
@@ -10,14 +11,17 @@ import { createStorage } from 'services/storage';
 import createRootReducer from 'redux/reducers';
 import * as slidesActions from 'redux/actions/slides';
 import type { State, Action } from 'redux/types';
+import rootSagas from 'redux/sagas';
 
 const persistConfig = {
   key: 'root',
   storage: createStorage(new Store()),
+  whitelist: ['slides'],
 };
 
 const history = createHashHistory();
 const rootReducer = createRootReducer(history);
+const sagaMiddleware = createSagaMiddleware();
 const persistedReducer: (State, Action) => State = persistReducer(
   persistConfig,
   rootReducer,
@@ -25,7 +29,7 @@ const persistedReducer: (State, Action) => State = persistReducer(
 
 const configureStore = (initialState?: State) => {
   // Redux Configuration
-  const middleware = [];
+  const middleware = [sagaMiddleware];
   const enhancers = [];
 
   // Thunk Middleware
@@ -68,6 +72,10 @@ const configureStore = (initialState?: State) => {
   // Create Store
   const store = createStore(persistedReducer, initialState, enhancer);
   const persistor = persistStore(store);
+
+  sagaMiddleware.run(rootSagas);
+
+  window.persistor = persistor;
 
   if (module.hot) {
     module.hot.accept('../reducers', () => {

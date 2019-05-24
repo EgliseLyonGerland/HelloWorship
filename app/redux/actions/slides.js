@@ -2,10 +2,10 @@
 import uuid from 'uuid/v1';
 import templates from 'templates/';
 import backgrounds from 'images/backgrounds';
-import { setCurrentSlide } from 'redux/actions/currentSlide';
 import type { Slide, SlidesState, Dispatch, GetState } from 'redux/types';
 
 export const SLIDES_ADD = 'slides/ADD';
+export const SLIDES_REPLACE = 'slides/REPLACE';
 
 export function addDefaultSlide(position?: number) {
   const slide = {
@@ -25,12 +25,17 @@ export function addSlide(slide: Slide, position?: number) {
       slides: SlidesState,
     } = getState();
 
-    await dispatch({
+    dispatch({
       type: SLIDES_ADD,
       position: position || slides.length,
       slide,
     });
+  };
+}
 
-    dispatch(setCurrentSlide(slide.id));
+export function replaceSlide(slide: Slide) {
+  return {
+    type: SLIDES_REPLACE,
+    slide,
   };
 }
