@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { Paper, Button } from '@material-ui/core';
+import { darken } from '@material-ui/core/styles';
 import { styled } from '@material-ui/styles';
 import Header from 'components/Header';
 import Slide from 'components/Slide';
@@ -34,10 +35,11 @@ const ContentWrapper = styled('div')({
   overflow: 'hidden',
 });
 
-const LeftPart = styled('div')({
+const LeftPart = styled('div')(({ theme: { palette } }) => ({
   width: 136,
   minWidth: 136,
-});
+  borderRight: [['solid', 1, palette.primary.dark]],
+}));
 
 const MiddlePart = styled('div')({
   flexGrow: 1,
@@ -66,7 +68,7 @@ const RightPart = styled('div')(({ theme: { palette } }) => ({
   width: 400,
   minWidth: 400,
   padding: 32,
-  borderLeft: `solid 1px ${palette.primary.dark}`,
+  background: darken(palette.primary.main, 0.1),
 }));
 
 export default function(props: Props) {

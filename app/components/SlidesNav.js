@@ -20,17 +20,6 @@ const useStyles = makeStyles(
       position: 'relative',
       width: '100%',
       height: '100%',
-
-      '&:after': {
-        content: '""',
-        position: 'absolute',
-        height: '70%',
-        width: 1,
-        right: 1,
-        top: '15%',
-        backgroundImage:
-          'linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%)',
-      },
     },
     inner: {
       maxHeight: '100%',
