@@ -53,9 +53,17 @@ const CurrentSlideWrapper = styled('div')({
   flexGrow: 1,
 });
 
-const CurrentSlide = styled(Paper)({
-  border: [['solid', 1, 'rgba(255,255,255,0.7)']],
-});
+const CurrentSlide = styled(({ editing, ...rest }) => <Paper {...rest} />)(
+  ({ editing, theme: { palette } }) => ({
+    border: [
+      [
+        'solid',
+        1,
+        editing ? palette.misc.activeItem : 'rgba(255, 255, 255, 0.7)',
+      ],
+    ],
+  }),
+);
 
 const CurrentSlideActions = styled('div')({
   paddingTop: 32,
@@ -104,7 +112,11 @@ export default function(props: Props) {
           <CurrentSlideActions />
           <CurrentSlideWrapper>
             <Box16x9>
-              <CurrentSlide elevation={10} square>
+              <CurrentSlide
+                editing={currentSlide.edit}
+                elevation={currentSlide.edit ? 16 : 8}
+                square
+              >
                 <Slide slide={currentSlide} />
               </CurrentSlide>
             </Box16x9>

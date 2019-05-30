@@ -15,11 +15,24 @@ type Props = {
 };
 
 const useStyles = makeStyles(
-  {
+  ({ palette }) => ({
     root: {
       position: 'relative',
       width: '100%',
       height: '100%',
+    },
+    disabled: {
+      position: 'relative',
+      opacity: 0.2,
+
+      '&:after': {
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+      },
     },
     inner: {
       maxHeight: '100%',
@@ -48,9 +61,9 @@ const useStyles = makeStyles(
       backgroundSize: 'cover',
     },
     thumbnailImageActive: {
-      borderColor: '#F9B74F',
+      borderColor: palette.misc.activeItem,
     },
-  },
+  }),
   { name: 'SlidesNav' },
 );
 
@@ -59,7 +72,11 @@ export default function SlidesNav(props: Props) {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
+    <div
+      className={classnames(classes.root, {
+        [classes.disabled]: currentSlide.edit,
+      })}
+    >
       <div className={classes.inner}>
         <PlusButton onClick={() => onAddClicked(0)} />
 

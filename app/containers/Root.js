@@ -29,6 +29,9 @@ const theme = createMuiTheme({
       default: primary.main,
       paper: primary.dark,
     },
+    misc: {
+      activeItem: '#F9B74F',
+    },
     type: 'dark',
   },
 });
