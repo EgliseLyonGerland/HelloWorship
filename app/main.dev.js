@@ -69,7 +69,9 @@ app.on('ready', async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    titleBarStyle: 'hiddenInset',
+    frame: false,
+    titleBarStyle: 'hidden',
+    backgroundColor: '#322E3C',
     webPreferences: {
       nodeIntegration: true,
     },

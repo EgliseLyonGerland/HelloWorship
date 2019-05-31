@@ -3,7 +3,7 @@ import React from 'react';
 import { Paper, Button } from '@material-ui/core';
 import { darken } from '@material-ui/core/styles';
 import { styled } from '@material-ui/styles';
-import Header from 'components/Header';
+import TitleBar from 'components/TitleBar';
 import Slide from 'components/Slide';
 import SlidesNav from 'components/SlidesNav';
 import Box16x9 from 'components/Box16x9';
@@ -26,8 +26,6 @@ const Wrapper = styled('div')({
   display: 'flex',
   flexDirection: 'column',
 });
-
-const HeaderWrapper = styled('div')({});
 
 const ContentWrapper = styled('div')({
   flexGrow: 1,
@@ -96,9 +94,7 @@ export default function(props: Props) {
 
   return (
     <Wrapper data-tid="container">
-      <HeaderWrapper>
-        <Header />
-      </HeaderWrapper>
+      <TitleBar />
       <ContentWrapper>
         <LeftPart>
           <SlidesNav
