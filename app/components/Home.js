@@ -8,6 +8,7 @@ import Slide from 'components/Slide';
 import SlidesNav from 'components/SlidesNav';
 import Box16x9 from 'components/Box16x9';
 import SlideForm from 'components/SlideForm';
+import TemplateAndBackgroundPicker from 'components/TemplateAndBackgroundPicker';
 import type { SlidesState, CurrentSlideState } from 'redux/types';
 
 type Props = {
@@ -20,6 +21,9 @@ type Props = {
   onCurrentSlideFieldChange: (name: string, value: mixed) => {},
 };
 
+const leftPaneWidth = 136;
+const rightPaneWidth = 400;
+
 const Wrapper = styled('div')({
   width: '100vw',
   height: '100vh',
@@ -27,19 +31,20 @@ const Wrapper = styled('div')({
   flexDirection: 'column',
 });
 
-const ContentWrapper = styled('div')({
+const Panes = styled('div')(({ extended }) => ({
   flexGrow: 1,
   display: 'flex',
-  overflow: 'hidden',
-});
+  transition: 'transform 0.3s',
+  transform: `translateX(-${extended ? leftPaneWidth : 0}px)`,
+}));
 
-const LeftPart = styled('div')(({ theme: { palette } }) => ({
-  width: 136,
-  minWidth: 136,
+const LeftPane = styled('div')(({ theme: { palette } }) => ({
+  width: leftPaneWidth,
+  minWidth: leftPaneWidth,
   borderRight: [['solid', 1, palette.primary.dark]],
 }));
 
-const MiddlePart = styled('div')({
+const MiddlePane = styled('div')({
   flexGrow: 1,
   display: 'flex',
   flexDirection: 'column',
@@ -70,10 +75,15 @@ const CurrentSlideActions = styled('div')({
   minHeight: 56,
 });
 
-const RightPart = styled('div')(({ theme: { palette } }) => ({
-  width: 400,
-  minWidth: 400,
+const RightPane = styled('div')({
+  minWidth: rightPaneWidth,
+  maxWidth: rightPaneWidth,
+});
+
+const RightPaneInner = styled('div')(({ extended, theme: { palette } }) => ({
   padding: 32,
+  width: extended ? rightPaneWidth + leftPaneWidth : rightPaneWidth,
+  height: '100%',
   background: darken(palette.primary.main, 0.1),
 }));
 
@@ -92,19 +102,21 @@ export default function(props: Props) {
     return null;
   }
 
+  const extended = false;
+
   return (
     <Wrapper data-tid="container">
       <TitleBar />
-      <ContentWrapper>
-        <LeftPart>
+      <Panes extended={extended}>
+        <LeftPane>
           <SlidesNav
             slides={slides}
             currentSlide={currentSlide}
             onSlideClicked={onSlideClicked}
             onAddClicked={onAddClicked}
           />
-        </LeftPart>
-        <MiddlePart>
+        </LeftPane>
+        <MiddlePane>
           <CurrentSlideActions />
           <CurrentSlideWrapper>
             <Box16x9>
@@ -138,16 +150,21 @@ export default function(props: Props) {
               </Button>
             )}
           </CurrentSlideActions>
-        </MiddlePart>
-        <RightPart>
-          {currentSlide.edit && (
-            <SlideForm
-              slide={currentSlide}
-              onFieldChange={onCurrentSlideFieldChange}
-            />
-          )}
-        </RightPart>
-      </ContentWrapper>
+        </MiddlePane>
+        <RightPane>
+          <RightPaneInner extended={extended}>
+            {currentSlide.edit &&
+              (extended ? (
+                <TemplateAndBackgroundPicker />
+              ) : (
+                <SlideForm
+                  slide={currentSlide}
+                  onFieldChange={onCurrentSlideFieldChange}
+                />
+              ))}
+          </RightPaneInner>
+        </RightPane>
+      </Panes>
     </Wrapper>
   );
 }
