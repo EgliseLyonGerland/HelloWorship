@@ -3,7 +3,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/styles';
 
 type Props = {
-  onClick: () => {},
+  onClick: () => void,
 };
 
 const useStyles = makeStyles(theme => ({

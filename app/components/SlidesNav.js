@@ -10,8 +10,9 @@ import PlusButton from './PlusButton';
 type Props = {
   slides: SlidesState,
   currentSlide: Slide,
-  onSlideClicked: (slideId: string) => {},
-  onAddClicked: (position: number) => {},
+  disabled?: boolean,
+  onSlideClicked: (slideId: string) => void,
+  onAddClicked: (position: number) => void,
 };
 
 const useStyles = makeStyles(
@@ -68,17 +69,27 @@ const useStyles = makeStyles(
 );
 
 export default function SlidesNav(props: Props) {
-  const { slides, currentSlide, onSlideClicked, onAddClicked } = props;
+  const {
+    slides,
+    currentSlide,
+    disabled,
+    onSlideClicked,
+    onAddClicked,
+  } = props;
   const classes = useStyles();
 
   return (
     <div
       className={classnames(classes.root, {
-        [classes.disabled]: currentSlide.edit,
+        [classes.disabled]: disabled,
       })}
     >
       <div className={classes.inner}>
-        <PlusButton onClick={() => onAddClicked(0)} />
+        <PlusButton
+          onClick={() => {
+            onAddClicked(0);
+          }}
+        />
 
         {slides.map((slide, index) => (
           <div key={slide.id}>
@@ -106,3 +117,7 @@ export default function SlidesNav(props: Props) {
     </div>
   );
 }
+
+SlidesNav.defaultProps = {
+  disabled: false,
+};

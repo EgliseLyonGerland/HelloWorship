@@ -17,6 +17,7 @@ esproposal.export_star_as=enable
 esproposal.decorators=ignore
 module.name_mapper='^components\/\(.*\)$' -> '<PROJECT_ROOT>/app/components/\1'
 module.name_mapper='^containers\/\(.*\)$' -> '<PROJECT_ROOT>/app/containers/\1'
+module.name_mapper='^constants\/\(.*\)$' -> '<PROJECT_ROOT>/app/constants/\1'
 module.name_mapper='^images\/\(.*\)$' -> '<PROJECT_ROOT>/app/images/\1'
 module.name_mapper='^redux\/\(.*\)$' -> '<PROJECT_ROOT>/app/redux/\1'
 module.name_mapper='^services\/\(.*\)$' -> '<PROJECT_ROOT>/app/services/\1'

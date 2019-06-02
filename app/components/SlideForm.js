@@ -13,7 +13,8 @@ import type { Slide } from 'redux/types';
 
 type Props = {
   slide: Slide,
-  onFieldChange: (name: string, value: mixed) => {},
+  onFieldChange: (name: string, value: mixed) => void,
+  onTemplateAndBackgroundChangeClicked: () => void,
 };
 
 const useStyles = makeStyles({
@@ -48,7 +49,7 @@ const renderTitle = title => {
 };
 
 export default function SlideForm(props: Props) {
-  const { slide, onFieldChange } = props;
+  const { slide, onFieldChange, onTemplateAndBackgroundChangeClicked } = props;
   const { templateId } = slide;
 
   const classes = useStyles();
@@ -62,7 +63,11 @@ export default function SlideForm(props: Props) {
           <div className={classes.templateAndBackgroundPreviewWrapper}>
             <Paper style={{ paddingBottom: '56.25%' }} square />
           </div>
-          <Button variant="outlined" size="small">
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={onTemplateAndBackgroundChangeClicked}
+          >
             Change
           </Button>
         </div>
