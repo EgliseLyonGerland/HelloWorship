@@ -107,8 +107,15 @@ const RightPaneInner = styled(({ extended, ...rest }) => <div {...rest} />)(
   ({ extended, theme: { palette } }) => ({
     padding: 32,
     height: '100%',
-    width: extended ? rightPaneWidth + leftPaneWidth : rightPaneWidth,
     background: darken(palette.primary.main, 0.1),
+    ...(extended
+      ? {
+          width: rightPaneWidth + leftPaneWidth,
+        }
+      : {
+          transition: 'width 0s 0.3s',
+          width: rightPaneWidth,
+        }),
   }),
 );
 
