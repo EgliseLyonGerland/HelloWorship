@@ -148,9 +148,9 @@ class Main extends Component<Props> {
   }
 
   ensureSelectedSlide() {
-    const { match, history, slides } = this.props;
+    const { location, history, slides } = this.props;
 
-    if (slides.length && match.url === '/') {
+    if (slides.length && location.pathname === '/') {
       history.push(generatePath(CURRENT_SLIDE, { slideId: slides[0].id }));
     }
   }
