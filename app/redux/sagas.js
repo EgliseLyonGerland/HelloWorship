@@ -1,6 +1,7 @@
 import { put, takeEvery, all, select } from 'redux-saga/effects';
 import { generatePath } from 'react-router';
 import { createMatchSelector, push } from 'connected-react-router';
+import find from 'lodash/find';
 
 import { replaceSlide, SLIDES_ADD } from 'redux/actions/slides';
 import {
@@ -30,6 +31,10 @@ function* locationChange() {
   const match = matchSelector(state);
 
   if (match) {
+    if (!find(state.slides, ['id', match.params.slideId])) {
+      return;
+    }
+
     yield put(setCurrentSlide(match.params.slideId));
   }
 }
