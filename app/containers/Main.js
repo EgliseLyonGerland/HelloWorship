@@ -4,9 +4,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { generatePath, matchPath } from 'react-router';
 import { Route } from 'react-router-dom';
-import { Paper, Button } from '@material-ui/core';
 import { darken } from '@material-ui/core/styles';
 import { styled } from '@material-ui/styles';
+import Button from '@material-ui/core/Button';
 import type { Location, Match, History } from 'react-router';
 
 import TitleBar from 'components/TitleBar';
@@ -75,21 +75,9 @@ const MiddlePane = styled('div')({
   padding: [[40, '4vw']],
 });
 
-const CurrentSlideWrapper = styled('div')({
+const CurrentSlide = styled('div')({
   flexGrow: 1,
 });
-
-const CurrentSlide = styled(({ editing, ...rest }) => <Paper {...rest} />)(
-  ({ editing, theme: { palette } }) => ({
-    border: [
-      [
-        'solid',
-        1,
-        editing ? palette.misc.activeItem : 'rgba(255, 255, 255, 0.7)',
-      ],
-    ],
-  }),
-);
 
 const CurrentSlideActions = styled('div')({
   paddingTop: 32,
@@ -210,17 +198,15 @@ class Main extends Component<Props> {
           </LeftPane>
           <MiddlePane>
             <CurrentSlideActions />
-            <CurrentSlideWrapper>
+            <CurrentSlide>
               <Box16x9>
-                <CurrentSlide
+                <Slide
+                  slide={currentSlide}
                   editing={editing}
                   elevation={editing ? 16 : 8}
-                  square
-                >
-                  <Slide slide={currentSlide} />
-                </CurrentSlide>
+                />
               </Box16x9>
-            </CurrentSlideWrapper>
+            </CurrentSlide>
             <CurrentSlideActions>
               {!editing ? (
                 <Button

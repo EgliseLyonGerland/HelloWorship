@@ -1,13 +1,19 @@
 // @flow
 import React, { Component } from 'react';
-import { styled } from '@material-ui/styles';
+import { withStyles } from '@material-ui/styles';
+import Paper from '@material-ui/core/Paper';
 import get from 'lodash/get';
+import classnames from 'classnames';
 import templates from 'templates/';
 import backgrounds from 'images/backgrounds';
-import type { SlideState } from 'redux/types';
+import type { SlideState, Slide as SlideType } from 'redux/types';
 
 type Props = {
   slide: SlideState,
+  classes: Object,
+  elevation?: number,
+  editing?: boolean,
+  onClick: (slide: SlideType) => void,
 };
 
 type State = {
@@ -18,33 +24,34 @@ type State = {
 const width = 1920;
 const height = 1080;
 
-const Wrapper = styled('div')({
-  position: 'relative',
-});
-
-const Background = styled('div')(({ src }) => ({
-  paddingTop: '56.25%',
-  backgroundSize: 'cover',
-  backgroundImage: `url(${src})`,
-}));
-
-const Elements = styled(({ display, ...rest }) => <div {...rest} />)(
-  ({ display }) => ({
-    display: display ? 'block' : 'none',
+const styles = theme => ({
+  root: {
+    position: 'relative',
+    border: [['solid', 1, 'rgba(255, 255, 255, 0.7)']],
+  },
+  editing: {
+    borderColor: theme.palette.misc.activeItem,
+  },
+  background: {
+    paddingTop: '56.25%',
+    backgroundSize: 'cover',
+  },
+  elements: {
     position: 'absolute',
     top: 0,
     left: 0,
     width,
     height,
     transformOrigin: 'top left',
-  }),
-);
-
-const Element = styled('div')({
-  position: 'absolute',
+  },
+  element: {
+    position: 'absolute',
+  },
 });
 
-export default class Slide extends Component<Props, State> {
+export default
+@withStyles(styles)
+class Slide extends Component<Props, State> {
   props: Props;
 
   state: State = {
@@ -109,25 +116,34 @@ export default class Slide extends Component<Props, State> {
     bottom: 'auto',
     left: 'auto',
   }) {
+    const { classes } = this.props;
     const transform = 'translate(-50%, -50%)';
     const value = this.getValue(key);
 
     return (
-      <Element
+      <div
+        className={classes.element}
         key={key}
         style={{ fontSize, fontWeight, top, right, bottom, left, transform }}
       >
         {value}
-      </Element>
+      </div>
     );
   }
 
   renderElements() {
+    const { classes } = this.props;
     const { scale, display } = this.state;
     const template = this.getTemplate();
 
     return (
-      <Elements display={display} style={{ transform: `scale(${scale})` }}>
+      <div
+        className={classes.elements}
+        style={{
+          transform: `scale(${scale})`,
+          display: display ? 'block' : 'none',
+        }}
+      >
         {template.elements.map(element => {
           switch (element.type) {
             case 'text':
@@ -136,12 +152,12 @@ export default class Slide extends Component<Props, State> {
               return null;
           }
         })}
-      </Elements>
+      </div>
     );
   }
 
   render() {
-    const { slide } = this.props;
+    const { slide, classes, onClick, elevation, editing } = this.props;
 
     if (!slide) {
       return null;
@@ -151,10 +167,27 @@ export default class Slide extends Component<Props, State> {
     const background = backgrounds[backgroundId];
 
     return (
-      <Wrapper ref={this.wrapper}>
-        <Background src={background} />
+      <Paper
+        elevation={elevation}
+        className={classnames(classes.root, {
+          [classes.editing]: editing,
+        })}
+        ref={this.wrapper}
+        onClick={() => onClick(slide)}
+        aria-hidden
+        square
+      >
+        <div
+          className={classes.background}
+          style={{ backgroundImage: `url(${background})` }}
+        />
         {this.renderElements()}
-      </Wrapper>
+      </Paper>
     );
   }
 }
+
+Slide.defaultProps = {
+  elevation: 5,
+  editing: false,
+};

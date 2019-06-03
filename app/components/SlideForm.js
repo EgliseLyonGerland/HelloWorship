@@ -3,16 +3,16 @@ import React, { Fragment } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import get from 'lodash/get';
 import transform from 'lodash/transform';
+import Slide from 'components/Slide';
 import templates from 'templates/';
-import type { Slide } from 'redux/types';
+import type { Slide as SlideType } from 'redux/types';
 
 type Props = {
-  slide: Slide,
+  slide: SlideType,
   onFieldChange: (name: string, value: mixed) => void,
   onTemplateAndBackgroundChangeClicked: () => void,
 };
@@ -50,7 +50,7 @@ const renderTitle = title => {
 
 export default function SlideForm(props: Props) {
   const { slide, onFieldChange, onTemplateAndBackgroundChangeClicked } = props;
-  const { templateId } = slide;
+  const { templateId, backgroundId } = slide;
 
   const classes = useStyles();
   const template = templates[templateId];
@@ -61,7 +61,7 @@ export default function SlideForm(props: Props) {
         {renderTitle('Template & background')}
         <div className={classes.templateAndBackground}>
           <div className={classes.templateAndBackgroundPreviewWrapper}>
-            <Paper style={{ paddingBottom: '56.25%' }} square />
+            <Slide slide={{ templateId, backgroundId }} />
           </div>
           <Button
             variant="outlined"

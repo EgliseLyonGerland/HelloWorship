@@ -1,22 +1,21 @@
 // @flow
 import React from 'react';
-import { Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import classnames from 'classnames';
-import backgrounds from 'images/backgrounds';
-import type { SlidesState, Slide } from 'redux/types';
-import PlusButton from './PlusButton';
+import Slide from 'components/Slide';
+import PlusButton from 'components/PlusButton';
+import type { SlidesState, Slide as SlideType } from 'redux/types';
 
 type Props = {
   slides: SlidesState,
-  currentSlide: Slide,
+  currentSlide: SlideType,
   disabled?: boolean,
   onSlideClicked: (slideId: string) => void,
   onAddClicked: (position: number) => void,
 };
 
 const useStyles = makeStyles(
-  ({ palette }) => ({
+  {
     root: {
       position: 'relative',
       width: '100%',
@@ -40,31 +39,22 @@ const useStyles = makeStyles(
       overflowY: 'auto',
       padding: [[0, 24, 24, 0]],
     },
-    thumbnailWrapper: {
+    item: {
       display: 'flex',
       alignItems: 'flex-end',
     },
-    thumbnailPosition: {
+    postion: {
       width: 32,
       paddingRight: 8,
       textAlign: 'right',
       fontSize: '0.75em',
       color: 'rgba(255,255,255,0.7)',
     },
-    thumbnailImageWrapper: {
+    slide: {
       flexGrow: 1,
       cursor: 'pointer',
     },
-    thumbnailImage: {
-      paddingBottom: '56.25%',
-      border: [['solid', 1]],
-      borderColor: 'rgba(255,255,255,0.7)',
-      backgroundSize: 'cover',
-    },
-    thumbnailImageActive: {
-      borderColor: palette.misc.activeItem,
-    },
-  }),
+  },
   { name: 'SlidesNav' },
 );
 
@@ -76,6 +66,7 @@ export default function SlidesNav(props: Props) {
     onSlideClicked,
     onAddClicked,
   } = props;
+
   const classes = useStyles();
 
   return (
@@ -93,19 +84,13 @@ export default function SlidesNav(props: Props) {
 
         {slides.map((slide, index) => (
           <div key={slide.id}>
-            <div className={classes.thumbnailWrapper}>
-              <div className={classes.thumbnailPosition}>{index + 1}</div>
-              <div className={classes.thumbnailImageWrapper}>
-                <Paper
-                  className={classnames(classes.thumbnailImage, {
-                    [classes.thumbnailImageActive]:
-                      slide.id === (currentSlide && currentSlide.id),
-                  })}
+            <div className={classes.item}>
+              <div className={classes.postion}>{index + 1}</div>
+              <div className={classes.slide}>
+                <Slide
+                  slide={slide}
                   elevation={3}
-                  square
-                  style={{
-                    backgroundImage: `url(${backgrounds[slide.backgroundId]})`,
-                  }}
+                  editing={slide.id === (currentSlide && currentSlide.id)}
                   onClick={() => onSlideClicked(slide.id)}
                 />
               </div>
