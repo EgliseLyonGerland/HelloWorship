@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { generatePath, matchPath } from 'react-router';
@@ -113,7 +113,7 @@ const mapStateToProps = state => ({
   currentSlide: state.currentSlide,
 });
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
       ...slidesActions,
@@ -121,156 +121,136 @@ function mapDispatchToProps(dispatch) {
     },
     dispatch,
   );
-}
+};
 
-export default
-@connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)
-class Main extends Component<Props> {
-  props: Props;
-
-  componentDidMount() {
-    this.avoidEmptySlides();
-    this.ensureSelectedSlide();
-  }
-
-  componentDidUpdate() {
-    this.avoidEmptySlides();
-  }
-
-  avoidEmptySlides() {
-    const { slides, addDefaultSlide } = this.props;
-
+function Main({
+  slides,
+  currentSlide,
+  addDefaultSlide,
+  setCurrentSlide,
+  editCurrentSlide,
+  saveCurrentSlide,
+  updateCurrentSlideField,
+  match,
+  history,
+  location,
+}: Props) {
+  useEffect(() => {
     if (slides.length === 0) {
       addDefaultSlide(0);
     }
-  }
+  });
 
-  ensureSelectedSlide() {
-    const { location, history, slides } = this.props;
-
-    if (slides.length && location.pathname === '/') {
+  useEffect(() => {
+    if ((slides.length && location.pathname === '/') || !currentSlide) {
       history.push(generatePath(CURRENT_SLIDE, { slideId: slides[0].id }));
     }
+  });
+
+  if (!currentSlide) {
+    return null;
   }
 
-  render() {
-    const {
-      slides,
-      currentSlide,
-      addDefaultSlide,
-      setCurrentSlide,
-      editCurrentSlide,
-      saveCurrentSlide,
-      updateCurrentSlideField,
-      match,
-      history,
-      location,
-    } = this.props;
+  const editing = !!matchPath(location.pathname, {
+    path: CURRENT_SLIDE_EDIT,
+  });
 
-    if (!currentSlide) {
-      return null;
-    }
+  const extended = !!matchPath(location.pathname, {
+    path: CURRENT_SLIDE_SET_TEMPLATE_AND_BACKGROUND,
+  });
 
-    const editing = !!matchPath(location.pathname, {
-      path: CURRENT_SLIDE_EDIT,
-    });
-
-    const extended = !!matchPath(location.pathname, {
-      path: CURRENT_SLIDE_SET_TEMPLATE_AND_BACKGROUND,
-    });
-
-    return (
-      <Wrapper data-tid="container">
-        <TitleBar />
-        <Panes extended={extended}>
-          <LeftPane>
-            <SlidesNav
-              slides={slides}
-              currentSlide={currentSlide}
-              disabled={editing}
-              onSlideClicked={slideId => {
-                history.push(generatePath(CURRENT_SLIDE, { slideId }));
-              }}
-              onAddClicked={addDefaultSlide}
-            />
-          </LeftPane>
-          <MiddlePane>
-            <CurrentSlideActions />
-            <CurrentSlide>
-              <Box16x9>
-                <Slide
+  return (
+    <Wrapper data-tid="container">
+      <TitleBar />
+      <Panes extended={extended}>
+        <LeftPane>
+          <SlidesNav
+            slides={slides}
+            currentSlide={currentSlide}
+            disabled={editing}
+            onSlideClicked={slideId => {
+              history.push(generatePath(CURRENT_SLIDE, { slideId }));
+            }}
+            onAddClicked={addDefaultSlide}
+          />
+        </LeftPane>
+        <MiddlePane>
+          <CurrentSlideActions />
+          <CurrentSlide>
+            <Box16x9>
+              <Slide
+                slide={currentSlide}
+                editing={editing}
+                elevation={editing ? 16 : 8}
+              />
+            </Box16x9>
+          </CurrentSlide>
+          <CurrentSlideActions>
+            {!editing ? (
+              <Button
+                variant="outlined"
+                size="small"
+                color="inherit"
+                onClick={() => {
+                  history.push(
+                    generatePath(CURRENT_SLIDE_EDIT, {
+                      slideId: currentSlide.id,
+                    }),
+                  );
+                }}
+              >
+                Edit
+              </Button>
+            ) : (
+              <Button
+                variant="outlined"
+                size="small"
+                color="inherit"
+                onClick={saveCurrentSlide}
+              >
+                Done
+              </Button>
+            )}
+          </CurrentSlideActions>
+        </MiddlePane>
+        <RightPane>
+          <RightPaneInner extended={extended}>
+            <Route
+              path={generatePath(CURRENT_SLIDE_EDIT, {
+                slideId: currentSlide.id,
+              })}
+              exact
+              render={() => (
+                <SlideForm
                   slide={currentSlide}
-                  editing={editing}
-                  elevation={editing ? 16 : 8}
-                />
-              </Box16x9>
-            </CurrentSlide>
-            <CurrentSlideActions>
-              {!editing ? (
-                <Button
-                  variant="outlined"
-                  size="small"
-                  color="inherit"
-                  onClick={() => {
+                  onFieldChange={updateCurrentSlideField}
+                  onTemplateAndBackgroundChangeClicked={() => {
                     history.push(
-                      generatePath(CURRENT_SLIDE_EDIT, {
+                      generatePath(CURRENT_SLIDE_SET_TEMPLATE_AND_BACKGROUND, {
                         slideId: currentSlide.id,
                       }),
                     );
                   }}
-                >
-                  Edit
-                </Button>
-              ) : (
-                <Button
-                  variant="outlined"
-                  size="small"
-                  color="inherit"
-                  onClick={saveCurrentSlide}
-                >
-                  Done
-                </Button>
+                />
               )}
-            </CurrentSlideActions>
-          </MiddlePane>
-          <RightPane>
-            <RightPaneInner extended={extended}>
-              <Route
-                path={generatePath(CURRENT_SLIDE_EDIT, {
-                  slideId: currentSlide.id,
-                })}
-                exact
-                render={() => (
-                  <SlideForm
-                    slide={currentSlide}
-                    onFieldChange={updateCurrentSlideField}
-                    onTemplateAndBackgroundChangeClicked={() => {
-                      history.push(
-                        generatePath(
-                          CURRENT_SLIDE_SET_TEMPLATE_AND_BACKGROUND,
-                          { slideId: currentSlide.id },
-                        ),
-                      );
-                    }}
-                  />
-                )}
-              />
-              <Route
-                path={generatePath(CURRENT_SLIDE_SET_TEMPLATE_AND_BACKGROUND, {
-                  slideId: currentSlide.id,
-                })}
-                exact
-                render={() => (
-                  <TemplateAndBackgroundPicker slide={currentSlide} />
-                )}
-              />
-            </RightPaneInner>
-          </RightPane>
-        </Panes>
-      </Wrapper>
-    );
-  }
+            />
+            <Route
+              path={generatePath(CURRENT_SLIDE_SET_TEMPLATE_AND_BACKGROUND, {
+                slideId: currentSlide.id,
+              })}
+              exact
+              render={() => (
+                <TemplateAndBackgroundPicker slide={currentSlide} />
+              )}
+            />
+          </RightPaneInner>
+        </RightPane>
+      </Panes>
+    </Wrapper>
+  );
 }
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Main);
