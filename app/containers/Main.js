@@ -96,6 +96,7 @@ const RightPaneInner = styled(({ extended, ...rest }) => <div {...rest} />)(
     padding: 32,
     height: '100%',
     background: darken(palette.primary.main, 0.1),
+    overflowY: 'auto',
     ...(extended
       ? {
           width: rightPaneWidth + leftPaneWidth,
@@ -262,7 +263,9 @@ class Main extends Component<Props> {
                   slideId: currentSlide.id,
                 })}
                 exact
-                render={() => <TemplateAndBackgroundPicker />}
+                render={() => (
+                  <TemplateAndBackgroundPicker slide={currentSlide} />
+                )}
               />
             </RightPaneInner>
           </RightPane>
