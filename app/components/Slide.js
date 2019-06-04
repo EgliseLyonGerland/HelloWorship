@@ -13,7 +13,7 @@ type Props = {
   classes: Object,
   elevation?: number,
   editing?: boolean,
-  onClick: (slide: SlideType) => void,
+  onClick?: (slide: SlideType) => void,
 };
 
 type State = {
@@ -53,6 +53,12 @@ export default
 @withStyles(styles)
 class Slide extends Component<Props, State> {
   props: Props;
+
+  static defaultProps = {
+    elevation: 5,
+    editing: false,
+    onClick: () => {},
+  };
 
   state: State = {
     scale: 1,
@@ -186,8 +192,3 @@ class Slide extends Component<Props, State> {
     );
   }
 }
-
-Slide.defaultProps = {
-  elevation: 5,
-  editing: false,
-};
