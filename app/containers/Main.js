@@ -5,8 +5,9 @@ import { connect } from 'react-redux';
 import { Route, Switch, generatePath, matchPath } from 'react-router';
 import { useTransition, animated, config } from 'react-spring';
 import { darken } from '@material-ui/core/styles';
-import { styled } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles';
 import Button from '@material-ui/core/Button';
+import classnames from 'classnames';
 import type { Location, History } from 'react-router';
 
 import TitleBar from 'components/TitleBar';
@@ -37,67 +38,61 @@ type Props = {
 const leftPaneWidth = 136;
 const rightPaneWidth = 400;
 
-const Wrapper = styled('div')({
-  width: '100vw',
-  height: '100vh',
-  display: 'flex',
-  flexDirection: 'column',
-});
-
-const Panes = styled(({ extended, ...rest }) => <div {...rest} />)(
-  ({ extended }) => ({
-    flexGrow: 1,
-    display: 'flex',
-    transition: 'transform 0.3s',
-    transform: `translateX(-${extended ? leftPaneWidth : 0}px)`,
+const useStyles = makeStyles(
+  ({ palette }) => ({
+    wrapper: {
+      width: '100vw',
+      height: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+    },
+    panes: {
+      flexGrow: 1,
+      display: 'flex',
+      transition: 'transform 0.3s',
+    },
+    panesExtended: {
+      transform: `translateX(-${leftPaneWidth}px)`,
+    },
+    leftPane: {
+      width: leftPaneWidth,
+      minWidth: leftPaneWidth,
+      borderRight: [['solid', 1, palette.primary.dark]],
+    },
+    middlePane: {
+      flexGrow: 1,
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      padding: [[40, '4vw']],
+    },
+    currentSlide: {
+      flexGrow: 1,
+    },
+    currentSlideActions: {
+      paddingTop: 32,
+      flexGrow: 0.1,
+      margin: 'auto',
+      minHeight: 56,
+    },
+    rightPane: {
+      minWidth: rightPaneWidth,
+      maxWidth: rightPaneWidth,
+    },
+    rightPaneInner: {
+      padding: 32,
+      height: '100%',
+      background: darken(palette.primary.main, 0.1),
+      overflowY: 'auto',
+      transition: 'width 0s 0.3s',
+      width: rightPaneWidth,
+    },
+    rightPaneInnerExtended: {
+      transition: 'width 0s',
+      width: rightPaneWidth + leftPaneWidth,
+    },
   }),
-);
-
-const LeftPane = styled('div')(({ theme: { palette } }) => ({
-  width: leftPaneWidth,
-  minWidth: leftPaneWidth,
-  borderRight: [['solid', 1, palette.primary.dark]],
-}));
-
-const MiddlePane = styled('div')({
-  flexGrow: 1,
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  padding: [[40, '4vw']],
-});
-
-const CurrentSlide = styled('div')({
-  flexGrow: 1,
-});
-
-const CurrentSlideActions = styled('div')({
-  paddingTop: 32,
-  flexGrow: 0.1,
-  margin: 'auto',
-  minHeight: 56,
-});
-
-const RightPane = styled('div')({
-  minWidth: rightPaneWidth,
-  maxWidth: rightPaneWidth,
-});
-
-const RightPaneInner = styled(({ extended, ...rest }) => <div {...rest} />)(
-  ({ extended, theme: { palette } }) => ({
-    padding: 32,
-    height: '100%',
-    background: darken(palette.primary.main, 0.1),
-    overflowY: 'auto',
-    ...(extended
-      ? {
-          width: rightPaneWidth + leftPaneWidth,
-        }
-      : {
-          transition: 'width 0s 0.3s',
-          width: rightPaneWidth,
-        }),
-  }),
+  { name: 'Main' },
 );
 
 const mapStateToProps = state => ({
@@ -136,6 +131,8 @@ function Main({
     }
   });
 
+  const classes = useStyles();
+
   const transitions = useTransition(location, loc => loc.pathname, {
     config: config.gentle,
     from: { opacity: 0 },
@@ -156,10 +153,14 @@ function Main({
   });
 
   return (
-    <Wrapper data-tid="container">
+    <div className={classes.wrapper}>
       <TitleBar />
-      <Panes extended={extended}>
-        <LeftPane>
+      <div
+        className={classnames(classes.panes, {
+          [classes.panesExtended]: extended,
+        })}
+      >
+        <div className={classes.leftPane}>
           <SlidesNav
             slides={slides}
             currentSlide={currentSlide}
@@ -169,10 +170,10 @@ function Main({
             }}
             onAddClicked={addDefaultSlide}
           />
-        </LeftPane>
-        <MiddlePane>
-          <CurrentSlideActions />
-          <CurrentSlide>
+        </div>
+        <div className={classes.middlePane}>
+          <div className={classes.currentSlideActions} />
+          <div className={classes.currentSlide}>
             <Box16x9>
               <Slide
                 slide={currentSlide}
@@ -180,8 +181,8 @@ function Main({
                 elevation={editing ? 16 : 8}
               />
             </Box16x9>
-          </CurrentSlide>
-          <CurrentSlideActions>
+          </div>
+          <div className={classes.currentSlideActions}>
             {!editing ? (
               <Button
                 variant="outlined"
@@ -207,10 +208,14 @@ function Main({
                 Done
               </Button>
             )}
-          </CurrentSlideActions>
-        </MiddlePane>
-        <RightPane>
-          <RightPaneInner extended={extended}>
+          </div>
+        </div>
+        <div className={classes.rightPane}>
+          <div
+            className={classnames(classes.rightPaneInner, {
+              [classes.rightPaneInnerExtended]: extended,
+            })}
+          >
             {transitions.map(({ props, key }) => (
               <animated.div style={props} key={key}>
                 <Switch>
@@ -260,10 +265,10 @@ function Main({
                 </Switch>
               </animated.div>
             ))}
-          </RightPaneInner>
-        </RightPane>
-      </Panes>
-    </Wrapper>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
