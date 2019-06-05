@@ -276,6 +276,7 @@
     "redux-persist": "6.0.0-pre1",
     "redux-saga": "1.0.2",
     "redux-thunk": "2.3.0",
+    "resize-detector": "0.2.0",
     "source-map-support": "0.5.12",
     "uuid": "3.3.2"
   },

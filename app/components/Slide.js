@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/styles';
 import Paper from '@material-ui/core/Paper';
 import get from 'lodash/get';
 import classnames from 'classnames';
+import { addListener, removeListener } from 'resize-detector';
 import templates from 'templates/';
 import backgrounds from 'images/backgrounds';
 import type { SlideState, Slide as SlideType } from 'redux/types';
@@ -122,6 +123,14 @@ export default function Slide({ slide, onClick, elevation, editing }: Props) {
   }
 
   useEffect(updateScale);
+
+  useEffect(() => {
+    addListener(wrapper.current, updateScale);
+
+    return () => {
+      removeListener(wrapper.current, updateScale);
+    };
+  }, []);
 
   const { backgroundId } = slide;
   const background = backgrounds[backgroundId];
