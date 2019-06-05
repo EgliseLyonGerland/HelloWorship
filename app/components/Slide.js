@@ -27,7 +27,7 @@ const height = 1080;
 const styles = theme => ({
   root: {
     position: 'relative',
-    border: [['solid', 1, 'rgba(255, 255, 255, 0.7)']],
+    border: [['solid', 1, 'rgba(255, 255, 255, 0.6)']],
   },
   editing: {
     borderColor: theme.palette.misc.activeItem,
