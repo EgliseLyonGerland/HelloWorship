@@ -245,7 +245,16 @@ function Main({
                     )}
                     exact
                     render={() => (
-                      <TemplateAndBackgroundPicker slide={currentSlide} />
+                      <TemplateAndBackgroundPicker
+                        slide={currentSlide}
+                        onClose={() => {
+                          history.push(
+                            generatePath(CURRENT_SLIDE_EDIT, {
+                              slideId: currentSlide.id,
+                            }),
+                          );
+                        }}
+                      />
                     )}
                   />
                 </Switch>

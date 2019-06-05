@@ -4,6 +4,8 @@ import { makeStyles } from '@material-ui/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Paper from '@material-ui/core/Paper';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import map from 'lodash/map';
 import Slide from 'components/Slide';
 import templates from 'templates/';
@@ -12,9 +14,18 @@ import type { Slide as SlideType } from 'redux/types';
 
 type Props = {
   slide: SlideType,
+  onClose: () => void,
 };
 
 const useStyles = makeStyles({
+  root: {
+    position: 'relative',
+  },
+  close: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+  },
   panes: {
     maxWidth: '100%',
     overflow: 'hidden',
@@ -37,18 +48,13 @@ const useStyles = makeStyles({
   },
 });
 
-export default ({ slide }: Props) => {
+export default ({ slide, onClose }: Props) => {
   const classes = useStyles();
   const [position, setPosition] = React.useState(0);
 
   return (
-    <div>
-      <Tabs
-        value={position}
-        indicatorColor="secondary"
-        textColor="inherit"
-        centered
-      >
+    <div className={classes.root}>
+      <Tabs value={position} indicatorColor="secondary" textColor="inherit">
         <Tab label="Template" onClick={() => setPosition(0)} />
         <Tab label="Background" onClick={() => setPosition(1)} />
       </Tabs>
@@ -82,6 +88,13 @@ export default ({ slide }: Props) => {
           </div>
         </div>
       </div>
+      <IconButton
+        className={classes.close}
+        onClick={onClose}
+        aria-label="Close"
+      >
+        <CloseIcon />
+      </IconButton>
     </div>
   );
 };
