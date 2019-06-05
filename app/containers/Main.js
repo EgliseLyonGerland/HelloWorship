@@ -2,12 +2,12 @@
 import React, { useEffect } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { generatePath, matchPath } from 'react-router';
-import { Route } from 'react-router-dom';
+import { Route, Switch, generatePath, matchPath } from 'react-router';
+import { useTransition, animated, config } from 'react-spring';
 import { darken } from '@material-ui/core/styles';
 import { styled } from '@material-ui/styles';
 import Button from '@material-ui/core/Button';
-import type { Location, Match, History } from 'react-router';
+import type { Location, History } from 'react-router';
 
 import TitleBar from 'components/TitleBar';
 import Slide from 'components/Slide';
@@ -27,17 +27,9 @@ import type { SlidesState, CurrentSlideState, Action } from 'redux/types';
 type Props = {
   slides: SlidesState,
   currentSlide: CurrentSlideState,
-  match: Match,
   history: History,
   location: Location,
-  onSlideClicked: (slideId: string) => {},
-  onAddClicked: (position: number) => {},
-  onEditClicked: () => {},
-  onDoneClicked: () => {},
-  onCurrentSlideFieldChange: (name: string, value: mixed) => {},
   addDefaultSlide: number => Action,
-  setCurrentSlide: string => Action,
-  editCurrentSlide: () => Action,
   saveCurrentSlide: () => Action,
   updateCurrentSlideField: (name: string, value: mixed) => Action,
 };
@@ -127,11 +119,8 @@ function Main({
   slides,
   currentSlide,
   addDefaultSlide,
-  setCurrentSlide,
-  editCurrentSlide,
   saveCurrentSlide,
   updateCurrentSlideField,
-  match,
   history,
   location,
 }: Props) {
@@ -145,6 +134,13 @@ function Main({
     if ((slides.length && location.pathname === '/') || !currentSlide) {
       history.push(generatePath(CURRENT_SLIDE, { slideId: slides[0].id }));
     }
+  });
+
+  const transitions = useTransition(location, loc => loc.pathname, {
+    config: config.gentle,
+    from: { opacity: 0 },
+    enter: { opacity: 1 },
+    leave: { display: 'none' },
   });
 
   if (!currentSlide) {
@@ -215,34 +211,46 @@ function Main({
         </MiddlePane>
         <RightPane>
           <RightPaneInner extended={extended}>
-            <Route
-              path={generatePath(CURRENT_SLIDE_EDIT, {
-                slideId: currentSlide.id,
-              })}
-              exact
-              render={() => (
-                <SlideForm
-                  slide={currentSlide}
-                  onFieldChange={updateCurrentSlideField}
-                  onTemplateAndBackgroundChangeClicked={() => {
-                    history.push(
-                      generatePath(CURRENT_SLIDE_SET_TEMPLATE_AND_BACKGROUND, {
+            {transitions.map(({ props, key }) => (
+              <animated.div style={props} key={key}>
+                <Switch>
+                  <Route
+                    path={generatePath(CURRENT_SLIDE_EDIT, {
+                      slideId: currentSlide.id,
+                    })}
+                    exact
+                    render={() => (
+                      <SlideForm
+                        slide={currentSlide}
+                        onFieldChange={updateCurrentSlideField}
+                        onTemplateAndBackgroundChangeClicked={() => {
+                          history.push(
+                            generatePath(
+                              CURRENT_SLIDE_SET_TEMPLATE_AND_BACKGROUND,
+                              {
+                                slideId: currentSlide.id,
+                              },
+                            ),
+                          );
+                        }}
+                      />
+                    )}
+                  />
+                  <Route
+                    path={generatePath(
+                      CURRENT_SLIDE_SET_TEMPLATE_AND_BACKGROUND,
+                      {
                         slideId: currentSlide.id,
-                      }),
-                    );
-                  }}
-                />
-              )}
-            />
-            <Route
-              path={generatePath(CURRENT_SLIDE_SET_TEMPLATE_AND_BACKGROUND, {
-                slideId: currentSlide.id,
-              })}
-              exact
-              render={() => (
-                <TemplateAndBackgroundPicker slide={currentSlide} />
-              )}
-            />
+                      },
+                    )}
+                    exact
+                    render={() => (
+                      <TemplateAndBackgroundPicker slide={currentSlide} />
+                    )}
+                  />
+                </Switch>
+              </animated.div>
+            ))}
           </RightPaneInner>
         </RightPane>
       </Panes>
