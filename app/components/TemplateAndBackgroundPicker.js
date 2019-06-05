@@ -17,36 +17,39 @@ type Props = {
   onClose: () => void,
 };
 
-const useStyles = makeStyles({
-  root: {
-    position: 'relative',
+const useStyles = makeStyles(
+  {
+    root: {
+      position: 'relative',
+    },
+    close: {
+      position: 'absolute',
+      top: 0,
+      right: 0,
+    },
+    panes: {
+      maxWidth: '100%',
+      overflow: 'hidden',
+      marginTop: 32,
+    },
+    panesInner: {
+      display: 'flex',
+      alignItems: 'flex-start',
+      transition: 'transform .5s',
+      margin: [[0, -16]],
+    },
+    pane: {
+      display: 'grid',
+      gridTemplateColumns: [['0.5fr', '0.5fr']],
+      gridColumnGap: 24,
+      gridRowGap: 24,
+      minWidth: 'calc(100% - 32px)',
+      maxWidth: 'calc(100% - 32px)',
+      margin: [[0, 16]],
+    },
   },
-  close: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-  },
-  panes: {
-    maxWidth: '100%',
-    overflow: 'hidden',
-    marginTop: 32,
-  },
-  panesInner: {
-    display: 'flex',
-    alignItems: 'flex-start',
-    transition: 'transform .5s',
-    margin: [[0, -16]],
-  },
-  pane: {
-    display: 'grid',
-    gridTemplateColumns: [['0.5fr', '0.5fr']],
-    gridColumnGap: 24,
-    gridRowGap: 24,
-    minWidth: 'calc(100% - 32px)',
-    maxWidth: 'calc(100% - 32px)',
-    margin: [[0, 16]],
-  },
-});
+  { name: 'TemplateAndBackgroundPicker' },
+);
 
 export default ({ slide, onClose }: Props) => {
   const classes = useStyles();

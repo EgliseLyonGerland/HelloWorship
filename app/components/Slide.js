@@ -19,30 +19,33 @@ type Props = {
 const width = 1920;
 const height = 1080;
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    position: 'relative',
-    border: [['solid', 1, 'rgba(255, 255, 255, 0.6)']],
-  },
-  editing: {
-    borderColor: theme.palette.misc.activeItem,
-  },
-  background: {
-    paddingTop: '56.25%',
-    backgroundSize: 'cover',
-  },
-  elements: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width,
-    height,
-    transformOrigin: 'top left',
-  },
-  element: {
-    position: 'absolute',
-  },
-}));
+const useStyles = makeStyles(
+  theme => ({
+    root: {
+      position: 'relative',
+      border: [['solid', 1, 'rgba(255, 255, 255, 0.6)']],
+    },
+    editing: {
+      borderColor: theme.palette.misc.activeItem,
+    },
+    background: {
+      paddingTop: '56.25%',
+      backgroundSize: 'cover',
+    },
+    elements: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width,
+      height,
+      transformOrigin: 'top left',
+    },
+    element: {
+      position: 'absolute',
+    },
+  }),
+  { name: 'Slide' },
+);
 
 export default function Slide({ slide, onClick, elevation, editing }: Props) {
   if (!slide) {

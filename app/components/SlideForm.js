@@ -17,25 +17,28 @@ type Props = {
   onTemplateAndBackgroundChangeClicked: () => void,
 };
 
-const useStyles = makeStyles({
-  root: {},
-  templateAndBackgroundWrapper: {
-    marginBottom: 56,
+const useStyles = makeStyles(
+  {
+    root: {},
+    templateAndBackgroundWrapper: {
+      marginBottom: 56,
+    },
+    templateAndBackground: {
+      display: 'flex',
+      alignItems: 'flex-end',
+    },
+    templateAndBackgroundPreviewWrapper: {
+      flexGrow: 1,
+      height: '100%',
+      marginRight: 24,
+    },
+    templateParameters: {},
+    templateParametersContent: {
+      marginTop: -16,
+    },
   },
-  templateAndBackground: {
-    display: 'flex',
-    alignItems: 'flex-end',
-  },
-  templateAndBackgroundPreviewWrapper: {
-    flexGrow: 1,
-    height: '100%',
-    marginRight: 24,
-  },
-  templateParameters: {},
-  templateParametersContent: {
-    marginTop: -16,
-  },
-});
+  { name: 'SlideForm' },
+);
 
 const renderTitle = title => {
   return (

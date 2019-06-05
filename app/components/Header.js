@@ -3,7 +3,12 @@ import { AppBar, Toolbar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import logo from 'images/logo.svg';
 
-const useStyles = makeStyles({ img: { margin: [[0, 'auto']] } });
+const useStyles = makeStyles(
+  {
+    img: { margin: [[0, 'auto']] },
+  },
+  { name: 'Header' },
+);
 
 export default () => {
   const classes = useStyles();
