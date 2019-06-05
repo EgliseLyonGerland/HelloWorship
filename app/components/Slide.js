@@ -1,6 +1,6 @@
 // @flow
-import React, { Component } from 'react';
-import { withStyles } from '@material-ui/styles';
+import React, { useRef, useState, useEffect } from 'react';
+import { makeStyles } from '@material-ui/styles';
 import Paper from '@material-ui/core/Paper';
 import get from 'lodash/get';
 import classnames from 'classnames';
@@ -10,21 +10,15 @@ import type { SlideState, Slide as SlideType } from 'redux/types';
 
 type Props = {
   slide: SlideState,
-  classes: Object,
   elevation?: number,
   editing?: boolean,
   onClick?: (slide: SlideType) => void,
 };
 
-type State = {
-  scale: number,
-  display: boolean,
-};
-
 const width = 1920;
 const height = 1080;
 
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
   root: {
     position: 'relative',
     border: [['solid', 1, 'rgba(255, 255, 255, 0.6)']],
@@ -47,65 +41,35 @@ const styles = theme => ({
   element: {
     position: 'absolute',
   },
-});
+}));
 
-export default
-@withStyles(styles)
-class Slide extends Component<Props, State> {
-  props: Props;
-
-  static defaultProps = {
-    elevation: 5,
-    editing: false,
-    onClick: () => {},
-  };
-
-  state: State = {
-    scale: 1,
-    display: false,
-  };
-
-  componentDidMount() {
-    this.updateScale();
+export default function Slide({ slide, onClick, elevation, editing }: Props) {
+  if (!slide) {
+    return null;
   }
 
-  componentWillReceiveProps() {
-    this.updateScale();
-  }
+  const classes = useStyles();
+  const wrapper = useRef();
+  const [scale, setScale] = useState(1);
+  const [display, setDisplay] = useState(false);
+  const template = templates[slide.templateId];
 
-  wrapper: {
-    current: null | HTMLDivElement,
-  } = React.createRef();
-
-  updateScale() {
-    if (!this.wrapper.current) {
+  function updateScale() {
+    if (!wrapper.current) {
       return;
     }
 
-    setTimeout(() => {
-      this.setState({
-        scale: this.wrapper.current.offsetWidth / width,
-        display: true,
-      });
-    }, 0);
+    setScale(wrapper.current.offsetWidth / width);
+    setDisplay(true);
   }
 
-  getTemplate() {
-    const { slide } = this.props;
-    const { templateId } = slide;
-
-    return templates[templateId];
-  }
-
-  getValue(name: string) {
-    const { slide } = this.props;
-    const template = this.getTemplate();
+  function getValue(name: string) {
     const placeholder = get(template.form, [name, 'placeholder'], '');
 
     return get(slide.data, name) || placeholder;
   }
 
-  renderText({
+  function renderText({
     key,
     fontSize = 20,
     fontWeight = 500,
@@ -122,9 +86,8 @@ class Slide extends Component<Props, State> {
     bottom: 'auto',
     left: 'auto',
   }) {
-    const { classes } = this.props;
     const transform = 'translate(-50%, -50%)';
-    const value = this.getValue(key);
+    const value = getValue(key);
 
     return (
       <div
@@ -137,11 +100,7 @@ class Slide extends Component<Props, State> {
     );
   }
 
-  renderElements() {
-    const { classes } = this.props;
-    const { scale, display } = this.state;
-    const template = this.getTemplate();
-
+  function renderElements() {
     return (
       <div
         className={classes.elements}
@@ -153,7 +112,7 @@ class Slide extends Component<Props, State> {
         {template.elements.map(element => {
           switch (element.type) {
             case 'text':
-              return this.renderText(element);
+              return renderText(element);
             default:
               return null;
           }
@@ -162,33 +121,35 @@ class Slide extends Component<Props, State> {
     );
   }
 
-  render() {
-    const { slide, classes, onClick, elevation, editing } = this.props;
+  useEffect(updateScale);
 
-    if (!slide) {
-      return null;
-    }
+  const { backgroundId } = slide;
+  const background = backgrounds[backgroundId];
 
-    const { backgroundId } = slide;
-    const background = backgrounds[backgroundId];
-
-    return (
-      <Paper
-        elevation={elevation}
-        className={classnames(classes.root, {
-          [classes.editing]: editing,
-        })}
-        ref={this.wrapper}
-        onClick={() => onClick(slide)}
-        aria-hidden
-        square
-      >
-        <div
-          className={classes.background}
-          style={{ backgroundImage: `url(${background})` }}
-        />
-        {this.renderElements()}
-      </Paper>
-    );
-  }
+  return (
+    <Paper
+      elevation={elevation}
+      className={classnames(classes.root, {
+        [classes.editing]: editing,
+      })}
+      ref={wrapper}
+      onClick={() => {
+        onClick(slide);
+      }}
+      aria-hidden
+      square
+    >
+      <div
+        className={classes.background}
+        style={{ backgroundImage: `url(${background})` }}
+      />
+      {renderElements()}
+    </Paper>
+  );
 }
+
+Slide.defaultProps = {
+  elevation: 5,
+  editing: false,
+  onClick: () => {},
+};
