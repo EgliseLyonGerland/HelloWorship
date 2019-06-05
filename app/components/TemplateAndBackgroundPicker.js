@@ -35,9 +35,6 @@ const useStyles = makeStyles({
     maxWidth: 'calc(100% - 32px)',
     margin: [[0, 16]],
   },
-  item: {
-    border: 'solid 1px rgba(255, 255, 255, 0.7)',
-  },
 });
 
 export default ({ slide }: Props) => {
@@ -62,14 +59,13 @@ export default ({ slide }: Props) => {
         >
           <div className={classes.pane}>
             {map(templates, template => (
-              <Paper className={classes.item} key={template.id} square>
-                <Slide
-                  slide={{
-                    ...slide,
-                    templateId: template.id,
-                  }}
-                />
-              </Paper>
+              <Slide
+                key={template.id}
+                slide={{
+                  ...slide,
+                  templateId: template.id,
+                }}
+              />
             ))}
           </div>
           <div className={classes.pane}>
