@@ -1474,6 +1474,17 @@
   dependencies:
     "@babel/runtime" "^7.2.0"
 
+"@material-ui/lab@4.0.0-alpha.15":
+  version "4.0.0-alpha.15"
+  resolved "https://registry.yarnpkg.com/@material-ui/lab/-/lab-4.0.0-alpha.15.tgz#f86e1fcbdc6e0c98877e2d1f65cd1840a025a957"
+  integrity sha512-ixO6YxO0fFro2mt9C0dwrcgbpaNQEVszaDxWgKXaTFHIkXZDV4cY+XM0otV2o7DZVVfjvB5aAvyNsb0+db1JPA==
+  dependencies:
+    "@babel/runtime" "^7.2.0"
+    "@material-ui/utils" "^4.0.1"
+    clsx "^1.0.2"
+    keycode "^2.1.9"
+    prop-types "^15.7.2"
+
 "@material-ui/styles@4.0.2", "@material-ui/styles@^4.0.2":
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@material-ui/styles/-/styles-4.0.2.tgz#05805b26bfcd876f883b098e4be50d813b1c5fde"
@@ -8546,6 +8557,11 @@ keyboardevent-from-electron-accelerator@^1.1.0:
 keyboardevents-areequal@^0.2.1:
   version "0.2.2"
   resolved "https://registry.npmjs.org/keyboardevents-areequal/-/keyboardevents-areequal-0.2.2.tgz#88191ec738ce9f7591c25e9056de928b40277194"
+
+keycode@^2.1.9:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/keycode/-/keycode-2.2.0.tgz#3d0af56dc7b8b8e5cba8d0a97f107204eec22b04"
+  integrity sha1-PQr1bce4uOXLqNCpfxByBO7CKwQ=
 
 keypress@^0.2.1:
   version "0.2.1"

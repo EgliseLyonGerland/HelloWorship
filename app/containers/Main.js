@@ -4,18 +4,21 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Route, Switch, generatePath, matchPath } from 'react-router';
 import { animated, useSpring } from 'react-spring';
-import { darken } from '@material-ui/core/styles';
-import { makeStyles } from '@material-ui/styles';
-import Button from '@material-ui/core/Button';
 import classnames from 'classnames';
 import type { Location, History } from 'react-router';
+
+import { darken } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 
 import TitleBar from 'components/TitleBar';
 import Slide from 'components/Slide';
 import SlidesNav from 'components/SlidesNav';
 import Box16x9 from 'components/Box16x9';
 import SlideForm from 'components/SlideForm';
+import CurrentSlideActions from 'components/CurrentSlideActions';
+import SlideFormActions from 'components/SlideFormActions';
 import TemplateAndBackgroundPicker from 'components/TemplateAndBackgroundPicker';
+
 import * as slidesActions from 'redux/actions/slides';
 import * as currentSlideActions from 'redux/actions/currentSlide';
 import {
@@ -59,6 +62,7 @@ const useStyles = makeStyles(
       borderRight: [['solid', 1, palette.secondary.dark]],
     },
     middlePane: {
+      position: 'relative',
       flexGrow: 1,
       display: 'flex',
       flexDirection: 'column',
@@ -79,6 +83,7 @@ const useStyles = makeStyles(
       maxWidth: rightPaneWidth,
     },
     rightPaneInner: {
+      position: 'relative',
       padding: 32,
       height: '100%',
       background: darken(palette.secondary.main, 0.1),
@@ -187,7 +192,6 @@ function Main({
           />
         </div>
         <div className={classes.middlePane}>
-          <div className={classes.currentSlideActions} />
           <div className={classes.currentSlide}>
             <Box16x9>
               <Slide
@@ -197,32 +201,12 @@ function Main({
               />
             </Box16x9>
           </div>
-          <div className={classes.currentSlideActions}>
-            {!editing ? (
-              <Button
-                variant="outlined"
-                size="small"
-                color="inherit"
-                onClick={() => {
-                  goTo(CURRENT_SLIDE_EDIT);
-                }}
-              >
-                Edit
-              </Button>
-            ) : (
-              <Button
-                variant="outlined"
-                size="small"
-                color="inherit"
-                onClick={() => {
-                  setDisplayRightPane(false);
-                  saveCurrentSlide();
-                }}
-              >
-                Done
-              </Button>
-            )}
-          </div>
+          <CurrentSlideActions
+            hidden={editing}
+            onEdit={() => {
+              goTo(CURRENT_SLIDE_EDIT);
+            }}
+          />
         </div>
         <div className={classes.rightPane}>
           <div
@@ -272,6 +256,18 @@ function Main({
           </div>
         </div>
       </animated.div>
+      <SlideFormActions
+        hidden={!editing}
+        onDone={() => {
+          setDisplayRightPane(false);
+          saveCurrentSlide();
+        }}
+        onCancel={() => {
+          history.push(
+            generatePath(CURRENT_SLIDE, { slideId: currentSlide.id }),
+          );
+        }}
+      />
     </div>
   );
 }
