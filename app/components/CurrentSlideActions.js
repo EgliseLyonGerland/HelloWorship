@@ -46,6 +46,7 @@ export default ({ hidden, onEdit }: Props) => {
       <SpeedDial
         ariaLabel="Current slide actions"
         color="secondary"
+        direction="left"
         hidden={hidden}
         open={open && !hidden}
         icon={<SpeedDialIcon icon={<EditIcon />} openIcon={<EditIcon />} />}
@@ -59,6 +60,7 @@ export default ({ hidden, onEdit }: Props) => {
         <SpeedDialAction
           icon={<DeleteIcon />}
           tooltipTitle="Delete"
+          tooltipPlacement="top"
           classes={{ button: classes.button }}
         />
       </SpeedDial>

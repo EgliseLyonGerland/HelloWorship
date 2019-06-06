@@ -13,7 +13,6 @@ import { makeStyles } from '@material-ui/styles';
 import TitleBar from 'components/TitleBar';
 import Slide from 'components/Slide';
 import SlidesNav from 'components/SlidesNav';
-import Box16x9 from 'components/Box16x9';
 import SlideForm from 'components/SlideForm';
 import CurrentSlideActions from 'components/CurrentSlideActions';
 import SlideFormActions from 'components/SlideFormActions';
@@ -65,12 +64,13 @@ const useStyles = makeStyles(
       position: 'relative',
       flexGrow: 1,
       display: 'flex',
-      flexDirection: 'column',
       justifyContent: 'center',
+      alignItems: 'center',
       padding: [[40, '4vw']],
     },
     currentSlide: {
-      flexGrow: 1,
+      maxWidth: 1000,
+      width: '100%',
     },
     currentSlideActions: {
       paddingTop: 32,
@@ -193,13 +193,11 @@ function Main({
         </div>
         <div className={classes.middlePane}>
           <div className={classes.currentSlide}>
-            <Box16x9>
-              <Slide
-                slide={currentSlide}
-                editing={editing}
-                elevation={editing ? 16 : 8}
-              />
-            </Box16x9>
+            <Slide
+              slide={currentSlide}
+              editing={editing}
+              elevation={editing ? 16 : 8}
+            />
           </div>
           <CurrentSlideActions
             hidden={editing}

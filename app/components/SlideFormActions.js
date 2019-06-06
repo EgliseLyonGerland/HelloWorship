@@ -47,6 +47,7 @@ export default ({ hidden, onDone, onCancel }: Props) => {
       <SpeedDial
         ariaLabel="Current slide actions"
         color="secondary"
+        direction="left"
         hidden={hidden}
         open={open && !hidden}
         icon={<SpeedDialIcon icon={<CheckIcon />} openIcon={<CheckIcon />} />}
@@ -60,6 +61,7 @@ export default ({ hidden, onDone, onCancel }: Props) => {
         <SpeedDialAction
           icon={<CancelIcon />}
           tooltipTitle="Cancel"
+          tooltipPlacement="top"
           onClick={onCancel}
           classes={{ button: classes.button }}
         />
