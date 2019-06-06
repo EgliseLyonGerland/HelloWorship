@@ -92,7 +92,12 @@ export default ({
     );
 
     return (
-      <div className={classes.item} onClick={() => callback(id)} aria-hidden>
+      <div
+        key={id}
+        className={classes.item}
+        onClick={() => callback(id)}
+        aria-hidden
+      >
         <Slide
           key={id}
           slide={{
