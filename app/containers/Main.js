@@ -56,7 +56,7 @@ const useStyles = makeStyles(
     leftPane: {
       width: leftPaneWidth,
       minWidth: leftPaneWidth,
-      borderRight: [['solid', 1, palette.primary.dark]],
+      borderRight: [['solid', 1, palette.secondary.dark]],
     },
     middlePane: {
       flexGrow: 1,
@@ -81,7 +81,7 @@ const useStyles = makeStyles(
     rightPaneInner: {
       padding: 32,
       height: '100%',
-      background: darken(palette.primary.main, 0.1),
+      background: darken(palette.secondary.main, 0.1),
       overflowY: 'auto',
       transition: 'width 0s 0.5s',
       width: rightPaneWidth,

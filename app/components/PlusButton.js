@@ -15,7 +15,7 @@ const useStyles = makeStyles(
 
       '&:hover': {
         '& $inner': {
-          background: theme.palette.primary.dark,
+          background: theme.palette.secondary.dark,
           transition: 'height 0.2s 0.3s',
 
           '&:before': {
@@ -58,7 +58,7 @@ const useStyles = makeStyles(
         content: '""',
         position: 'absolute',
         transition: 'background-color 0.2s',
-        background: theme.palette.primary.light,
+        background: theme.palette.secondary.light,
         top: '50%',
         left: '50%',
         marginTop: -8,

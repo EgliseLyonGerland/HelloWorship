@@ -57,7 +57,7 @@ const useStyles = makeStyles(
       position: 'absolute',
       bottom: 4,
       right: 4,
-      background: theme.palette.primary.dark,
+      background: theme.palette.secondary.dark,
       fontSize: 10,
       padding: [[2, 4]],
       borderRadius: 4,
@@ -110,7 +110,7 @@ export default ({
 
   return (
     <div className={classes.root}>
-      <Tabs value={position} indicatorColor="secondary" textColor="inherit">
+      <Tabs value={position} indicatorColor="primary" textColor="inherit">
         <Tab label="Template" onClick={() => setPosition(0)} />
         <Tab label="Background" onClick={() => setPosition(1)} />
       </Tabs>
