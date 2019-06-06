@@ -6,6 +6,7 @@ import type { Slide, SlidesState, Dispatch, GetState } from 'redux/types';
 
 export const SLIDES_ADD = 'slides/ADD';
 export const SLIDES_REPLACE = 'slides/REPLACE';
+export const SLIDES_DELETE = 'slides/DELETE';
 
 export function addDefaultSlide(position?: number) {
   const slide = {
@@ -37,5 +38,12 @@ export function replaceSlide(slide: Slide) {
   return {
     type: SLIDES_REPLACE,
     slide,
+  };
+}
+
+export function deleteSlide(slideId: string) {
+  return {
+    type: SLIDES_DELETE,
+    slideId,
   };
 }

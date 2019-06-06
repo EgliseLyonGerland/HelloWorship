@@ -51,10 +51,10 @@ export default ({ hidden, onDone, onCancel }: Props) => {
         hidden={hidden}
         open={open && !hidden}
         icon={<SpeedDialIcon icon={<CheckIcon />} openIcon={<CheckIcon />} />}
+        onClick={onDone}
         onBlur={() => setOpen(false)}
         onClose={() => setOpen(false)}
         onFocus={() => setOpen(true)}
-        onClick={onDone}
         onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => setOpen(false)}
       >

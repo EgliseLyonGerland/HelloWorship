@@ -1,5 +1,9 @@
 // @flow
-import { SLIDES_ADD, SLIDES_REPLACE } from 'redux/actions/slides';
+import {
+  SLIDES_ADD,
+  SLIDES_REPLACE,
+  SLIDES_DELETE,
+} from 'redux/actions/slides';
 import type { Action, SlidesState } from '../types';
 
 export default function slides(state: SlidesState = [], action: Action) {
@@ -18,6 +22,9 @@ export default function slides(state: SlidesState = [], action: Action) {
           return slide;
         }),
       ];
+    case SLIDES_DELETE:
+      return [...state.filter(slide => slide.id !== action.slideId)];
+
     default:
       return state;
   }

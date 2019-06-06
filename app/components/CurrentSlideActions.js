@@ -12,7 +12,8 @@ import usePrevious from 'utils/usePrevious';
 
 type Props = {
   hidden: boolean,
-  onEdit: () => void,
+  onEdit: (close: () => void) => void,
+  onDelete: (close: () => void) => void,
 };
 
 const useStyles = makeStyles(
@@ -29,15 +30,22 @@ const useStyles = makeStyles(
   { name: 'CurrentSlideActionz' },
 );
 
-export default ({ hidden, onEdit }: Props) => {
+export default ({ hidden, onEdit, onDelete }: Props) => {
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
+  const [opened, setOpened] = useState(false);
+
+  function open() {
+    setOpened(true);
+  }
+
+  function close() {
+    setOpened(false);
+  }
 
   const prevHidden = usePrevious(hidden);
-
   useEffect(() => {
     if (hidden !== prevHidden && hidden === true) {
-      setOpen(false);
+      close();
     }
   });
 
@@ -48,19 +56,20 @@ export default ({ hidden, onEdit }: Props) => {
         color="secondary"
         direction="left"
         hidden={hidden}
-        open={open && !hidden}
+        open={opened && !hidden}
         icon={<SpeedDialIcon icon={<EditIcon />} openIcon={<EditIcon />} />}
-        onBlur={() => setOpen(false)}
-        onClose={() => setOpen(false)}
-        onFocus={() => setOpen(true)}
-        onClick={onEdit}
-        onMouseEnter={() => setOpen(true)}
-        onMouseLeave={() => setOpen(false)}
+        onClick={() => onEdit(close)}
+        onBlur={close}
+        onClose={close}
+        onFocus={open}
+        onMouseEnter={open}
+        onMouseLeave={close}
       >
         <SpeedDialAction
           icon={<DeleteIcon />}
           tooltipTitle="Delete"
           tooltipPlacement="top"
+          onClick={() => onDelete(close)}
           classes={{ button: classes.button }}
         />
       </SpeedDial>

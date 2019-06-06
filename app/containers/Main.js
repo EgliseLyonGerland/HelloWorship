@@ -33,6 +33,7 @@ type Props = {
   history: History,
   location: Location,
   addDefaultSlide: number => Action,
+  deleteSlide: string => Action,
   saveCurrentSlide: () => Action,
   updateCurrentSlideTemplate: (templateId: string) => Action,
   updateCurrentSlideBackground: (backgroundId: string) => Action,
@@ -118,6 +119,7 @@ function Main({
   slides,
   currentSlide,
   addDefaultSlide,
+  deleteSlide,
   saveCurrentSlide,
   updateCurrentSlideTemplate,
   updateCurrentSlideBackground,
@@ -203,6 +205,10 @@ function Main({
             hidden={editing}
             onEdit={() => {
               goTo(CURRENT_SLIDE_EDIT);
+            }}
+            onDelete={close => {
+              close();
+              deleteSlide(currentSlide.id);
             }}
           />
         </div>
