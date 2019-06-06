@@ -1,9 +1,9 @@
 // @flow
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Route, Switch, generatePath, matchPath } from 'react-router';
-import { useTransition, animated, config } from 'react-spring';
+import { animated, useSpring } from 'react-spring';
 import { darken } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/styles';
 import Button from '@material-ui/core/Button';
@@ -45,14 +45,11 @@ const useStyles = makeStyles(
       height: '100vh',
       display: 'flex',
       flexDirection: 'column',
+      overflow: 'hidden',
     },
     panes: {
       flexGrow: 1,
       display: 'flex',
-      transition: 'transform 0.3s',
-    },
-    panesExtended: {
-      transform: `translateX(-${leftPaneWidth}px)`,
     },
     leftPane: {
       width: leftPaneWidth,
@@ -84,7 +81,7 @@ const useStyles = makeStyles(
       height: '100%',
       background: darken(palette.primary.main, 0.1),
       overflowY: 'auto',
-      transition: 'width 0s 0.3s',
+      transition: 'width 0s 0.5s',
       width: rightPaneWidth,
     },
     rightPaneInnerExtended: {
@@ -133,17 +130,6 @@ function Main({
 
   const classes = useStyles();
 
-  const transitions = useTransition(location, loc => loc.pathname, {
-    config: config.gentle,
-    from: { opacity: 0 },
-    enter: { opacity: 1 },
-    leave: { display: 'none' },
-  });
-
-  if (!currentSlide) {
-    return null;
-  }
-
   const editing = !!matchPath(location.pathname, {
     path: CURRENT_SLIDE_EDIT,
   });
@@ -152,14 +138,39 @@ function Main({
     path: CURRENT_SLIDE_SET_TEMPLATE_AND_BACKGROUND,
   });
 
+  const [displayRightPane, setDisplayRightPane] = useState(true);
+
+  const panesStyles = useSpring({
+    immediate: !editing,
+    to: { transform: `translateX(-${extended ? leftPaneWidth : 0}px)` },
+    onRest() {
+      setDisplayRightPane(true);
+    },
+  });
+
+  const rightPaneStyles = useSpring({
+    immediate: !displayRightPane,
+    to: { opacity: displayRightPane ? 1 : 0 },
+  });
+
+  if (!currentSlide) {
+    return null;
+  }
+
+  function goTo(route) {
+    setDisplayRightPane(false);
+
+    history.push(
+      generatePath(route, {
+        slideId: currentSlide.id,
+      }),
+    );
+  }
+
   return (
     <div className={classes.wrapper}>
       <TitleBar />
-      <div
-        className={classnames(classes.panes, {
-          [classes.panesExtended]: extended,
-        })}
-      >
+      <animated.div className={classes.panes} style={panesStyles}>
         <div className={classes.leftPane}>
           <SlidesNav
             slides={slides}
@@ -189,11 +200,7 @@ function Main({
                 size="small"
                 color="inherit"
                 onClick={() => {
-                  history.push(
-                    generatePath(CURRENT_SLIDE_EDIT, {
-                      slideId: currentSlide.id,
-                    }),
-                  );
+                  goTo(CURRENT_SLIDE_EDIT);
                 }}
               >
                 Edit
@@ -216,58 +223,45 @@ function Main({
               [classes.rightPaneInnerExtended]: extended,
             })}
           >
-            {transitions.map(({ props, key }) => (
-              <animated.div style={props} key={key}>
-                <Switch>
-                  <Route
-                    path={generatePath(CURRENT_SLIDE_EDIT, {
+            <animated.div style={rightPaneStyles}>
+              <Switch>
+                <Route
+                  path={generatePath(CURRENT_SLIDE_EDIT, {
+                    slideId: currentSlide.id,
+                  })}
+                  exact
+                  render={() => (
+                    <SlideForm
+                      slide={currentSlide}
+                      onFieldChange={updateCurrentSlideField}
+                      onTemplateAndBackgroundChangeClicked={() => {
+                        goTo(CURRENT_SLIDE_SET_TEMPLATE_AND_BACKGROUND);
+                      }}
+                    />
+                  )}
+                />
+                <Route
+                  path={generatePath(
+                    CURRENT_SLIDE_SET_TEMPLATE_AND_BACKGROUND,
+                    {
                       slideId: currentSlide.id,
-                    })}
-                    exact
-                    render={() => (
-                      <SlideForm
-                        slide={currentSlide}
-                        onFieldChange={updateCurrentSlideField}
-                        onTemplateAndBackgroundChangeClicked={() => {
-                          history.push(
-                            generatePath(
-                              CURRENT_SLIDE_SET_TEMPLATE_AND_BACKGROUND,
-                              {
-                                slideId: currentSlide.id,
-                              },
-                            ),
-                          );
-                        }}
-                      />
-                    )}
-                  />
-                  <Route
-                    path={generatePath(
-                      CURRENT_SLIDE_SET_TEMPLATE_AND_BACKGROUND,
-                      {
-                        slideId: currentSlide.id,
-                      },
-                    )}
-                    exact
-                    render={() => (
-                      <TemplateAndBackgroundPicker
-                        slide={currentSlide}
-                        onClose={() => {
-                          history.push(
-                            generatePath(CURRENT_SLIDE_EDIT, {
-                              slideId: currentSlide.id,
-                            }),
-                          );
-                        }}
-                      />
-                    )}
-                  />
-                </Switch>
-              </animated.div>
-            ))}
+                    },
+                  )}
+                  exact
+                  render={() => (
+                    <TemplateAndBackgroundPicker
+                      slide={currentSlide}
+                      onClose={() => {
+                        goTo(CURRENT_SLIDE_EDIT);
+                      }}
+                    />
+                  )}
+                />
+              </Switch>
+            </animated.div>
           </div>
         </div>
-      </div>
+      </animated.div>
     </div>
   );
 }
