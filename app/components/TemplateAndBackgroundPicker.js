@@ -15,6 +15,8 @@ import type { Slide as SlideType } from 'redux/types';
 type Props = {
   slide: SlideType,
   onClose: () => void,
+  onTemplateSelected: (templateId: string) => void,
+  onBackgroundSelected: (backgroundId: string) => void,
 };
 
 const useStyles = makeStyles(
@@ -51,7 +53,12 @@ const useStyles = makeStyles(
   { name: 'TemplateAndBackgroundPicker' },
 );
 
-export default ({ slide, onClose }: Props) => {
+export default ({
+  slide,
+  onClose,
+  onTemplateSelected,
+  onBackgroundSelected,
+}: Props) => {
   const classes = useStyles();
   const [position, setPosition] = React.useState(0);
 
@@ -74,6 +81,7 @@ export default ({ slide, onClose }: Props) => {
                   ...slide,
                   templateId: template.id,
                 }}
+                onClick={() => onTemplateSelected(template.id)}
               />
             ))}
           </div>
@@ -85,6 +93,7 @@ export default ({ slide, onClose }: Props) => {
                     ...slide,
                     backgroundId,
                   }}
+                  onClick={() => onBackgroundSelected(backgroundId)}
                 />
               </Paper>
             ))}

@@ -32,6 +32,8 @@ type Props = {
   location: Location,
   addDefaultSlide: number => Action,
   saveCurrentSlide: () => Action,
+  updateCurrentSlideTemplate: (templateId: string) => Action,
+  updateCurrentSlideBackground: (backgroundId: string) => Action,
   updateCurrentSlideField: (name: string, value: mixed) => Action,
 };
 
@@ -112,6 +114,8 @@ function Main({
   currentSlide,
   addDefaultSlide,
   saveCurrentSlide,
+  updateCurrentSlideTemplate,
+  updateCurrentSlideBackground,
   updateCurrentSlideField,
   history,
   location,
@@ -141,7 +145,7 @@ function Main({
   const [displayRightPane, setDisplayRightPane] = useState(true);
 
   const panesStyles = useSpring({
-    immediate: !editing,
+    // immediate: !editing,
     to: { transform: `translateX(-${extended ? leftPaneWidth : 0}px)` },
     onRest() {
       setDisplayRightPane(true);
@@ -210,7 +214,10 @@ function Main({
                 variant="outlined"
                 size="small"
                 color="inherit"
-                onClick={saveCurrentSlide}
+                onClick={() => {
+                  setDisplayRightPane(false);
+                  saveCurrentSlide();
+                }}
               >
                 Done
               </Button>
@@ -254,6 +261,8 @@ function Main({
                       onClose={() => {
                         goTo(CURRENT_SLIDE_EDIT);
                       }}
+                      onTemplateSelected={updateCurrentSlideTemplate}
+                      onBackgroundSelected={updateCurrentSlideBackground}
                     />
                   )}
                 />
