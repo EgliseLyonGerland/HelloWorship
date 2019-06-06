@@ -257,7 +257,8 @@ function Main({
                   exact
                   render={() => (
                     <TemplateAndBackgroundPicker
-                      slide={currentSlide}
+                      slides={slides}
+                      currentSlide={currentSlide}
                       onClose={() => {
                         goTo(CURRENT_SLIDE_EDIT);
                       }}

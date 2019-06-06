@@ -1,26 +1,26 @@
 // @flow
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import map from 'lodash/map';
 import Slide from 'components/Slide';
 import templates from 'templates/';
 import backgrounds from 'images/backgrounds';
-import type { Slide as SlideType } from 'redux/types';
+import type { SlidesState, Slide as SlideType } from 'redux/types';
 
 type Props = {
-  slide: SlideType,
+  slides: SlidesState,
+  currentSlide: SlideType,
   onClose: () => void,
   onTemplateSelected: (templateId: string) => void,
   onBackgroundSelected: (backgroundId: string) => void,
 };
 
 const useStyles = makeStyles(
-  {
+  theme => ({
     root: {
       position: 'relative',
     },
@@ -49,18 +49,64 @@ const useStyles = makeStyles(
       maxWidth: 'calc(100% - 32px)',
       margin: [[0, 16]],
     },
-  },
+    item: {
+      cursor: 'pointer',
+      position: 'relative',
+    },
+    itemTotalUsed: {
+      position: 'absolute',
+      bottom: 4,
+      right: 4,
+      background: theme.palette.primary.dark,
+      fontSize: 10,
+      padding: [[2, 4]],
+      borderRadius: 4,
+    },
+  }),
   { name: 'TemplateAndBackgroundPicker' },
 );
 
 export default ({
-  slide,
+  slides,
+  currentSlide,
   onClose,
   onTemplateSelected,
   onBackgroundSelected,
 }: Props) => {
   const classes = useStyles();
-  const [position, setPosition] = React.useState(0);
+  const [position, setPosition] = useState(0);
+
+  function renderItem(type, id) {
+    const keyName = `${type}Id`;
+
+    let callback;
+    if (type === 'background') {
+      callback = onBackgroundSelected;
+    } else {
+      callback = onTemplateSelected;
+    }
+
+    const totalUsed = slides.reduce(
+      (acc, curr) => acc + (curr[keyName] === id),
+      0,
+    );
+
+    return (
+      <div className={classes.item} onClick={() => callback(id)} aria-hidden>
+        <Slide
+          key={id}
+          slide={{
+            ...currentSlide,
+            [keyName]: id,
+          }}
+        />
+
+        {totalUsed ? (
+          <div className={classes.itemTotalUsed}>Used {totalUsed} times</div>
+        ) : null}
+      </div>
+    );
+  }
 
   return (
     <div className={classes.root}>
@@ -74,29 +120,12 @@ export default ({
           style={{ transform: `translateX(-${position * 100}%)` }}
         >
           <div className={classes.pane}>
-            {map(templates, template => (
-              <Slide
-                key={template.id}
-                slide={{
-                  ...slide,
-                  templateId: template.id,
-                }}
-                onClick={() => onTemplateSelected(template.id)}
-              />
-            ))}
+            {map(templates, template => renderItem('template', template.id))}
           </div>
           <div className={classes.pane}>
-            {map(backgrounds, (background, backgroundId) => (
-              <Paper className={classes.item} key={backgroundId} square>
-                <Slide
-                  slide={{
-                    ...slide,
-                    backgroundId,
-                  }}
-                  onClick={() => onBackgroundSelected(backgroundId)}
-                />
-              </Paper>
-            ))}
+            {map(backgrounds, (background, backgroundId) =>
+              renderItem('background', backgroundId),
+            )}
           </div>
         </div>
       </div>
