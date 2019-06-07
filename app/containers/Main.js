@@ -263,8 +263,8 @@ function Main({
       <SlideFormActions
         hidden={!editing}
         onDone={() => {
-          setDisplayRightPane(false);
           saveCurrentSlide();
+          setDisplayRightPane(false);
         }}
         onCancel={() => {
           history.push(
