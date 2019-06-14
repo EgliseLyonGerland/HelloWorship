@@ -2,20 +2,52 @@ export default {
   id: 'e5c6a5d1-f196-4e59-bee2-dfed87257646',
   elements: [
     {
-      key: 'title',
-      type: 'text',
-      fontSize: 90,
-      fontWeight: 900,
-      top: '50%',
-      left: '50%',
-    },
-    {
-      key: 'baseline',
-      type: 'text',
-      fontSize: 60,
-      fontWeight: 400,
-      top: '60%',
-      left: '50%',
+      type: 'flex',
+      width: 1920,
+      height: 1080,
+      alignItems: 'center',
+      justifyContent: 'center',
+      elements: [
+        {
+          type: 'flex',
+          alignItems: 'center',
+          spacing: 96,
+          elements: [
+            {
+              type: 'text',
+              bind: 'text',
+              width: 960,
+              fontSize: 60,
+              fontWeight: 500,
+              italic: true,
+            },
+            {
+              type: 'divider',
+              vertical: true,
+            },
+            {
+              type: 'flex',
+              flexDirection: 'column',
+              spacing: 96,
+              width: 400,
+              elements: [
+                {
+                  type: 'text',
+                  bind: 'title',
+                  fontSize: 90,
+                  fontWeight: 900,
+                },
+                {
+                  type: 'text',
+                  bind: 'subtitle',
+                  fontSize: 90,
+                  fontWeight: 500,
+                },
+              ],
+            },
+          ],
+        },
+      ],
     },
   ],
   form: {
@@ -24,12 +56,17 @@ export default {
       label: 'Title',
       placeholder: 'Lorem ipsum',
     },
-    baseline: {
+    subtitle: {
       type: 'text',
-      label: 'Baseline',
+      label: 'Subtitle',
+      placeholder: 'Dolor sit amet',
+    },
+    text: {
+      type: 'text',
+      label: 'Text',
       multiline: true,
       placeholder:
-        'Interdum et malesuada fames ac ante ipsum primis in faucibus',
+        '“ Lorem ipsum dolor sit amet, consectetur adipiscing elit morbi commodo nulla mattis dolor sagittis semper maecenas pellentesque viverra ipsum. ”',
     },
   },
 };

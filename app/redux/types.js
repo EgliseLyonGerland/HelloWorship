@@ -1,3 +1,5 @@
+// @flow
+
 import type {
   Dispatch as ReduxDispatch,
   Reducer as ReduxReducer,

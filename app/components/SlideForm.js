@@ -27,12 +27,11 @@ const useStyles = makeStyles(
       display: 'flex',
       alignItems: 'flex-end',
     },
-    templateAndBackgroundPreviewWrapper: {
+    templateAndBackgroundPreview: {
       flexGrow: 1,
       height: '100%',
       marginRight: 24,
     },
-    templateParameters: {},
     templateParametersContent: {
       marginTop: -16,
     },
@@ -63,16 +62,18 @@ export default function SlideForm(props: Props) {
       <div className={classes.templateAndBackgroundWrapper}>
         {renderTitle('Template & background')}
         <div className={classes.templateAndBackground}>
-          <div className={classes.templateAndBackgroundPreviewWrapper}>
+          <div className={classes.templateAndBackgroundPreview}>
             <Slide slide={{ templateId, backgroundId }} />
           </div>
-          <Button
-            variant="outlined"
-            size="small"
-            onClick={onTemplateAndBackgroundChangeClicked}
-          >
-            Change
-          </Button>
+          <div>
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={onTemplateAndBackgroundChangeClicked}
+            >
+              Change
+            </Button>
+          </div>
         </div>
       </div>
       <div className={classes.templateParameters}>

@@ -44,7 +44,7 @@ const useStyles = makeStyles(
       alignItems: 'flex-end',
     },
     postion: {
-      width: 32,
+      minWidth: 32,
       paddingRight: 8,
       textAlign: 'right',
       fontSize: '0.75em',
