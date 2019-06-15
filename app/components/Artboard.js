@@ -17,8 +17,13 @@ type Props = {
 export default function ArtBoard({ template, background, data }: Props) {
   function getElementValue({ bind }) {
     const placeholder = get(template, ['form', bind, 'placeholder'], 'Empty');
+    const datum = get(data, bind);
 
-    return get(data, bind, placeholder);
+    if (!datum) {
+      return placeholder;
+    }
+
+    return datum;
   }
 
   function renderFlex({ elements, ...options }) {
