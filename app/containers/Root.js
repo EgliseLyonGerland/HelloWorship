@@ -9,6 +9,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import { PersistGate } from 'redux-persist/integration/react';
 import type { Persistor } from 'redux-persist/lib/types';
 import type { Store } from 'redux/types';
+import fonts from 'fonts/';
 import Routes from '../Routes';
 
 type Props = {
@@ -39,6 +40,22 @@ const theme = createMuiTheme({
       activeItem: primary.main,
     },
     type: 'dark',
+  },
+  overrides: {
+    MuiCssBaseline: {
+      '@global': {
+        '@font-face': fonts.map(font => ({
+          fontFamily: font.name,
+          fontStyle: font.style,
+          fontDisplay: 'swap',
+          fontWeight: font.weight,
+          src: `url(${font.src}) format("truetype")`,
+        })),
+        body: {
+          userSelect: 'none',
+        },
+      },
+    },
   },
 });
 

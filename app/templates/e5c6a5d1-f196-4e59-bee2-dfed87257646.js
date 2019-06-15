@@ -17,8 +17,10 @@ export default {
               type: 'text',
               bind: 'text',
               width: 960,
-              fontSize: 60,
-              fontWeight: 500,
+              fontSize: 80,
+              fontFamily: 'EB Garamond',
+              fontStyle: 'italic',
+              fontWeight: 600,
               italic: true,
             },
             {
@@ -28,7 +30,6 @@ export default {
             {
               type: 'flex',
               flexDirection: 'column',
-              spacing: 96,
               width: 400,
               elements: [
                 {

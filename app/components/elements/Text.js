@@ -9,7 +9,9 @@ const context = canvas.getContext('2d');
 
 const defaultFontSize = 60;
 const defaultLineHeight = 1.3;
+const defaultFontFamily = 'Source Sans Pro';
 const defaultFontWeight = 500;
+const defaultFontStyle = 'normal';
 
 type TextData = {
   text: string,
@@ -21,7 +23,9 @@ type TextData = {
 type Props = {
   text: string | TextData,
   fontSize: number,
+  fontFamily: 'Source Sans Pro' | 'EB Garamond',
   fontWeight: 400 | 500 | 700 | 900,
+  fontStyle: 'normal' | 'italic',
   lineHeight: number,
   textAlign: 'left' | 'right' | 'center',
   width: number,
@@ -37,10 +41,15 @@ function getLineHeightInPx({
 
 function getTextWidth(
   text,
-  { fontSize = defaultFontSize, fontWeight = defaultFontWeight },
+  {
+    fontSize = defaultFontSize,
+    fontFamily = defaultFontFamily,
+    fontWeight = defaultFontWeight,
+    fontStyle = defaultFontStyle,
+  },
 ) {
   context.save();
-  context.font = `${fontWeight} ${fontSize}px Roboto`;
+  context.font = `${fontStyle} ${fontWeight} ${fontSize}px ${fontFamily}`;
   const { width } = context.measureText(text);
   context.restore();
 
@@ -52,7 +61,9 @@ function getData(
   {
     width = SLIDE_WIDTH,
     fontSize = defaultFontSize,
+    fontFamily = defaultFontFamily,
     fontWeight = defaultFontWeight,
+    fontStyle = defaultFontStyle,
     lineHeight = defaultLineHeight,
   },
 ) {
@@ -64,14 +75,24 @@ function getData(
   };
 
   const words = text.split(' ');
-  const spaceWidth = getTextWidth(' ', { fontSize, fontWeight });
+  const spaceWidth = getTextWidth(' ', {
+    fontSize,
+    fontFamily,
+    fontWeight,
+    fontStyle,
+  });
 
   let currentWidth = 0;
   let currentLine = [];
   let currentWord = words.shift();
 
   while (currentWord) {
-    const wordWidth = getTextWidth(currentWord, { fontSize, fontWeight });
+    const wordWidth = getTextWidth(currentWord, {
+      fontSize,
+      fontFamily,
+      fontWeight,
+      fontStyle,
+    });
 
     if (currentLine.length && currentWidth + wordWidth > width) {
       data.lines.push(currentLine.join(' '));
@@ -104,7 +125,9 @@ export function createTextElement({ text, ...options }: Props) {
 export default function Text({
   text,
   fontSize = defaultFontSize,
+  fontFamily = defaultFontFamily,
   fontWeight = defaultFontWeight,
+  fontStyle = defaultFontStyle,
   lineHeight = defaultLineHeight,
   textAlign = 'left',
   width = SLIDE_WIDTH,
@@ -112,7 +135,14 @@ export default function Text({
   let data = text;
 
   if (isString(data)) {
-    data = getData(data, { width, fontSize, fontWeight, lineHeight });
+    data = getData(data, {
+      width,
+      fontSize,
+      fontFamily,
+      fontWeight,
+      fontStyle,
+      lineHeight,
+    });
   }
 
   // const chars = Array.from(data.text);
@@ -152,8 +182,9 @@ export default function Text({
       style={{
         fontSize,
         fontWeight,
+        fontStyle,
         lineHeight,
-        fontFamily: 'Roboto',
+        fontFamily,
         fill: '#FFFFFF',
       }}
       dominantBaseline="text-before-edge"
