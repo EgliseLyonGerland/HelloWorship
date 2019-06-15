@@ -16,7 +16,9 @@ export default {
   id: '${id}',
   elements: [
     {
-      type: 'flexbox',
+      type: 'flex',
+      width: 1920,
+      height: 1080,
       alignItems: 'center',
       justifyContent: 'center',
       elements: [
@@ -25,11 +27,9 @@ export default {
           bind: 'title',
           fontSize: 90,
           fontWeight: 900,
-          top: '50%',
-          left: '50%',
         },
-      ]
-    }
+      ],
+    },
   ],
   form: {
     title: {
@@ -38,7 +38,7 @@ export default {
       placeholder: 'Lorem ipsum',
     },
   },
-};
+}
 `;
 
 const options = {
