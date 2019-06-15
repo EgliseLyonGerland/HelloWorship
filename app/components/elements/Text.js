@@ -86,7 +86,7 @@ function getData(
   let currentLine = [];
   let currentWord = words.shift();
 
-  while (currentWord) {
+  while (currentWord !== undefined) {
     const wordWidth = getTextWidth(currentWord, {
       fontSize,
       fontFamily,
