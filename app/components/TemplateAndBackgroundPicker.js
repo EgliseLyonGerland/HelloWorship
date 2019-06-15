@@ -6,6 +6,7 @@ import Tab from '@material-ui/core/Tab';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import map from 'lodash/map';
+import classnames from 'classnames';
 import Slide from 'components/Slide';
 import templates from 'templates/';
 import backgrounds from 'images/backgrounds';
@@ -53,6 +54,10 @@ const useStyles = makeStyles(
       cursor: 'pointer',
       position: 'relative',
     },
+    slide: {},
+    current: {
+      opacity: 0.5,
+    },
     itemTotalUsed: {
       position: 'absolute',
       bottom: 4,
@@ -91,6 +96,12 @@ export default ({
       0,
     );
 
+    const current = slides.reduce(
+      (acc, curr) =>
+        acc || (curr.id === currentSlide.id && curr[keyName] === id),
+      false,
+    );
+
     return (
       <div
         key={id}
@@ -98,14 +109,20 @@ export default ({
         onClick={() => callback(id)}
         aria-hidden
       >
-        <Slide
-          key={id}
-          slide={{
-            ...currentSlide,
-            [keyName]: id,
-          }}
-        />
-
+        <div
+          className={classnames(classes.slide, {
+            [classes.current]: current,
+          })}
+        >
+          <Slide
+            key={id}
+            editing={id === currentSlide[keyName]}
+            slide={{
+              ...currentSlide,
+              [keyName]: id,
+            }}
+          />
+        </div>
         {totalUsed ? (
           <div className={classes.itemTotalUsed}>Used {totalUsed} times</div>
         ) : null}
