@@ -45,17 +45,17 @@ export default class MenuBuilder {
 
   buildDarwinTemplate() {
     const subMenuAbout = {
-      label: 'Electron',
+      label: 'HelloWorship',
       submenu: [
         {
-          label: 'About ElectronReact',
+          label: 'About HelloWorship',
           selector: 'orderFrontStandardAboutPanel:',
         },
         { type: 'separator' },
         { label: 'Services', submenu: [] },
         { type: 'separator' },
         {
-          label: 'Hide ElectronReact',
+          label: 'Hide HelloWorship',
           accelerator: 'Command+H',
           selector: 'hide:',
         },
