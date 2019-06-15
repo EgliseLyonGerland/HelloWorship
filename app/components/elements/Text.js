@@ -56,6 +56,24 @@ function getTextWidth(
   return width;
 }
 
+function splitText(text: string) {
+  const words = text.split(' ');
+
+  if (words.length < 3) {
+    return words;
+  }
+
+  const lastWord = words.pop();
+
+  if (lastWord.length <= 3) {
+    words[words.length - 1] += ` ${lastWord}`;
+  } else {
+    words.push(lastWord);
+  }
+
+  return words;
+}
+
 function getData(
   text,
   {
@@ -74,7 +92,7 @@ function getData(
     height: 0,
   };
 
-  const words = text.split(' ');
+  const words = splitText(text);
   const spaceWidth = getTextWidth(' ', {
     fontSize,
     fontFamily,
