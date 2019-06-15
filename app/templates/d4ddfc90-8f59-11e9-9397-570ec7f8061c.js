@@ -1,5 +1,5 @@
 export default {
-  id: 'e5c6a5d1-f196-4e59-bee2-dfed87257646',
+  id: 'd4ddfc90-8f59-11e9-9397-570ec7f8061c',
   elements: [
     {
       type: 'flex',
@@ -13,19 +13,6 @@ export default {
           alignItems: 'center',
           spacing: 96,
           elements: [
-            {
-              type: 'text',
-              bind: 'text',
-              width: 960,
-              fontSize: 80,
-              fontFamily: 'EB Garamond',
-              fontStyle: 'italic',
-              fontWeight: 600,
-            },
-            {
-              type: 'divider',
-              vertical: true,
-            },
             {
               type: 'flex',
               flexDirection: 'column',
@@ -44,6 +31,19 @@ export default {
                   fontWeight: 500,
                 },
               ],
+            },
+            {
+              type: 'divider',
+              vertical: true,
+            },
+            {
+              type: 'text',
+              bind: 'text',
+              width: 960,
+              fontSize: 80,
+              fontFamily: 'EB Garamond',
+              fontStyle: 'italic',
+              fontWeight: 600,
             },
           ],
         },
@@ -66,7 +66,7 @@ export default {
       label: 'Text',
       multiline: true,
       placeholder:
-        '“ Lorem ipsum dolor sit amet, consectetur adipiscing elit morbi commodo nulla mattis dolor sagittis semper maecenas.. ”',
+        '“ Lorem ipsum dolor sit amet, consectetur adipiscing elit morbi commodo nulla mattis dolor sagittis semper maecenas. ”',
     },
   },
 };
