@@ -40,13 +40,15 @@ function getTotalDimension(dimensions, spacing, flexDirection) {
   const { length } = dimensions;
   const column = isColumnDirection(flexDirection);
 
-  return dimensions.reduce(
-    (acc, [width, height]) =>
-      column
-        ? [Math.max(acc[0], width), acc[1] + height]
-        : [acc[0] + width, Math.max(acc[1], height)],
-    [column ? 0 : spacing * (length - 1), column ? spacing * (length - 1) : 0],
-  );
+  return column
+    ? dimensions.reduce(
+        (acc, [width, height]) => [Math.max(acc[0], width), acc[1] + height],
+        [0, spacing * (length - 1)],
+      )
+    : dimensions.reduce(
+        (acc, [width, height]) => [acc[0] + width, Math.max(acc[1], height)],
+        [spacing * (length - 1), 0],
+      );
 }
 
 function getData(options: Props) {
@@ -121,7 +123,7 @@ export default function Flexbox(props: Props) {
     if (value === 'y') {
       wrapperSize = height;
       contentSize = contentHeight;
-      [, , , defaultPosition] = dimensions[index];
+      defaultPosition = dimensions[index][3] + index * spacing;
     }
 
     if (justifyContent === 'flex-end') {
