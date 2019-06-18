@@ -8,8 +8,8 @@ import CloseIcon from '@material-ui/icons/Close';
 import map from 'lodash/map';
 import classnames from 'classnames';
 import Slide from 'components/Slide';
-import templates from 'templates/';
-import backgrounds from 'images/backgrounds';
+import templates from 'assets/templates';
+import backgrounds from 'assets/backgrounds';
 import type { SlidesState, Slide as SlideType } from 'redux/types';
 
 type Props = {

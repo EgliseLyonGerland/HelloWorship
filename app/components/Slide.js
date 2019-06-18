@@ -3,8 +3,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/styles';
 import Paper from '@material-ui/core/Paper';
 import classnames from 'classnames';
-import templates from 'templates/';
-import backgrounds from 'images/backgrounds';
+import templates from 'assets/templates';
+import backgrounds from 'assets/backgrounds';
 import type { SlideState, Slide as SlideType } from 'redux/types';
 
 import Artboard from 'components/Artboard';

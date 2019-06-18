@@ -1,7 +1,7 @@
 // @flow
 import uuid from 'uuid/v1';
-import templates from 'templates/';
-import backgrounds from 'images/backgrounds';
+import templates from 'assets/templates';
+import backgrounds from 'assets/backgrounds';
 import type { Slide, SlidesState, Dispatch, GetState } from 'redux/types';
 
 export const SLIDES_ADD = 'slides/ADD';

@@ -9,7 +9,7 @@ const prettierOptions = JSON.parse(
 );
 
 const id = uuid();
-const filePath = `${__dirname}/../app/templates/${id}.js`;
+const filePath = `${__dirname}/../app/assets/templates/${id}.js`;
 
 const body = `
 export default {
