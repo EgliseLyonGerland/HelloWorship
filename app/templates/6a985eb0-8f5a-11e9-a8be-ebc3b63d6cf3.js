@@ -38,19 +38,17 @@ export default {
     },
   ],
   form: {
-    form: {
-      title: {
-        type: 'text',
-        label: 'Title',
-        placeholder: 'Lorem ipsum',
-      },
-      text: {
-        type: 'text',
-        label: 'Text',
-        multiline: true,
-        placeholder:
-          '“ Lorem ipsum dolor sit amet, consectetur adipiscing elit morbi commodo nulla mattis dolor sagittis semper maecenas. ”',
-      },
+    title: {
+      type: 'text',
+      label: 'Title',
+      placeholder: 'Lorem ipsum',
+    },
+    text: {
+      type: 'text',
+      label: 'Text',
+      multiline: true,
+      placeholder:
+        '“ Lorem ipsum dolor sit amet, consectetur adipiscing elit morbi commodo nulla mattis dolor sagittis semper maecenas. ”',
     },
   },
 };
