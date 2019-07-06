@@ -17,6 +17,7 @@ export type Reducers = {
 export type CombinedReducer = ReduxCombinedReducer<Reducers, Action>;
 
 export type Slide = {
+  id: string,
   templateId: string,
   backgroundId: string,
   data: {

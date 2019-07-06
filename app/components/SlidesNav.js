@@ -2,6 +2,9 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
 import classnames from 'classnames';
+import { useTransition, animated } from 'react-spring';
+import { easeQuadInOut as easing } from 'd3-ease';
+
 import Slide from 'components/Slide';
 import type { SlidesState, Slide as SlideType } from 'redux/types';
 
@@ -40,7 +43,7 @@ const useStyles = makeStyles(
     item: {
       display: 'flex',
       alignItems: 'flex-end',
-      margin: [[16, 0]],
+      // margin: [[16, 0]],
     },
     postion: {
       minWidth: 32,
@@ -57,10 +60,29 @@ const useStyles = makeStyles(
   { name: 'SlidesNav' },
 );
 
-export default function SlidesNav(props: Props) {
-  const { slides, currentSlide, disabled, onSlideClicked } = props;
-
+export default function SlidesNav({
+  slides,
+  currentSlide,
+  disabled,
+  onSlideClicked,
+}: Props) {
   const classes = useStyles();
+
+  const transitions = useTransition(slides, slide => slide.id, {
+    config: {
+      duration: 300,
+      easing,
+    },
+    from: { height: 0, opacity: 0 },
+    leave: () => async next => {
+      await next({ opacity: 0 });
+      await next({ height: 0 });
+    },
+    enter: () => async next => {
+      await next({ height: 64 });
+      await next({ opacity: 1 });
+    },
+  });
 
   return (
     <div
@@ -69,18 +91,18 @@ export default function SlidesNav(props: Props) {
       })}
     >
       <div className={classes.inner}>
-        {slides.map((slide, index) => (
-          <div className={classes.item} key={slide.id}>
+        {transitions.map(({ item, props, key }, index) => (
+          <animated.div className={classes.item} key={key} style={props}>
             <div className={classes.postion}>{index + 1}</div>
             <div className={classes.slide}>
               <Slide
-                slide={slide}
+                slide={item}
                 elevation={3}
-                editing={slide.id === (currentSlide && currentSlide.id)}
-                onClick={() => onSlideClicked(slide.id)}
+                editing={item.id === (currentSlide && currentSlide.id)}
+                onClick={() => onSlideClicked(item.id)}
               />
             </div>
-          </div>
+          </animated.div>
         ))}
       </div>
     </div>
