@@ -3,7 +3,7 @@ import { generatePath } from 'react-router';
 import { createMatchSelector, push } from 'connected-react-router';
 import find from 'lodash/find';
 
-import { replaceSlide, SLIDES_ADD } from 'redux/actions/slides';
+import { replaceSlide, SLIDES_ADD, SLIDES_DELETE } from 'redux/actions/slides';
 import {
   setCurrentSlide,
   CURRENT_SLIDE_SAVE,
@@ -19,6 +19,16 @@ function* saveCurrentSlide() {
 
 function* addSlide({ slide }) {
   yield put(setCurrentSlide(slide.id));
+}
+
+function* deleteSlide({ position }) {
+  const { slides } = yield select();
+  const currentSlideIndex = Math.max(0, position - 1);
+  const currentSlide = slides[currentSlideIndex];
+
+  if (currentSlide) {
+    yield put(setCurrentSlide(currentSlide.id));
+  }
 }
 
 function* locationChange() {
@@ -49,10 +59,19 @@ function* watchAddSlide() {
   yield takeEvery(SLIDES_ADD, addSlide);
 }
 
+function* watchDeleteSlide() {
+  yield takeEvery(SLIDES_DELETE, deleteSlide);
+}
+
 function* watchLocationChange() {
   yield takeEvery('@@router/LOCATION_CHANGE', locationChange);
 }
 
 export default function* root() {
-  yield all([watchAddSlide(), watchSaveCurrentSlide(), watchLocationChange()]);
+  yield all([
+    watchAddSlide(),
+    watchDeleteSlide(),
+    watchSaveCurrentSlide(),
+    watchLocationChange(),
+  ]);
 }

@@ -1,5 +1,7 @@
 // @flow
 import uuid from 'uuid/v1';
+import findIndex from 'lodash/findIndex';
+
 import templates from 'assets/templates';
 import backgrounds from 'assets/backgrounds';
 import type { Slide, SlidesState, Dispatch, GetState } from 'redux/types';
@@ -42,8 +44,17 @@ export function replaceSlide(slide: Slide) {
 }
 
 export function deleteSlide(slideId: string) {
-  return {
-    type: SLIDES_DELETE,
-    slideId,
+  return async (dispatch: Dispatch, getState: GetState) => {
+    const {
+      slides,
+    }: {
+      slides: SlidesState,
+    } = getState();
+
+    dispatch({
+      type: SLIDES_DELETE,
+      slideId,
+      position: findIndex(slides, ['id', slideId]),
+    });
   };
 }
