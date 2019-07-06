@@ -1,23 +1,38 @@
 import React from 'react';
-import { AppBar, Toolbar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import logo from 'images/logo.svg';
+import Button from '@material-ui/core/Button';
+import AddIcon from '@material-ui/icons/Add';
 
-const useStyles = makeStyles(
-  {
-    img: { margin: [[0, 'auto']] },
+type Props = {
+  onAddClicked: () => void,
+};
+
+const useStyles = makeStyles(({ palette }) => ({
+  root: {
+    display: 'flex',
+    alignItems: 'center',
+    background: palette.secondary.dark,
+    height: 72,
+    minHeight: 72,
+    padding: [[20, 8, 0]],
+    borderBottom: [[1, 'rgba(0, 0, 0, .2)', 'solid']],
+    '-webkit-app-region': 'drag',
   },
-  { name: 'Header' },
-);
+}));
 
-export default () => {
+export default function TitleBar({ onAddClicked }: Props) {
   const classes = useStyles();
 
   return (
-    <AppBar position="relative" color="inherit" elevation={0}>
-      <Toolbar>
-        <img className={classes.img} src={logo} alt="Logo" />
-      </Toolbar>
-    </AppBar>
+    <div className={classes.root}>
+      <Button
+        variant="contained"
+        size="small"
+        color="secondary"
+        onClick={onAddClicked}
+      >
+        <AddIcon />
+      </Button>
+    </div>
   );
-};
+}

@@ -5,12 +5,13 @@ import { connect } from 'react-redux';
 import { Route, Switch, generatePath, matchPath } from 'react-router';
 import { animated, useSpring } from 'react-spring';
 import classnames from 'classnames';
+import findIndex from 'lodash/findIndex';
 import type { Location, History } from 'react-router';
 
 import { darken } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/styles';
 
-import TitleBar from 'components/TitleBar';
+import Header from 'components/Header';
 import Slide from 'components/Slide';
 import SlidesNav from 'components/SlidesNav';
 import SlideForm from 'components/SlideForm';
@@ -178,9 +179,15 @@ function Main({
     );
   }
 
+  function handleAddSlide() {
+    const index = findIndex(slides, ['id', currentSlide.id]);
+
+    addDefaultSlide(index + 1);
+  }
+
   return (
     <div className={classes.wrapper}>
-      <TitleBar />
+      <Header onAddClicked={handleAddSlide} />
       <animated.div className={classes.panes} style={panesStyles}>
         <div className={classes.leftPane}>
           <SlidesNav
@@ -190,7 +197,6 @@ function Main({
             onSlideClicked={slideId => {
               history.push(generatePath(CURRENT_SLIDE, { slideId }));
             }}
-            onAddClicked={addDefaultSlide}
           />
         </div>
         <div className={classes.middlePane}>

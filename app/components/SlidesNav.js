@@ -3,7 +3,6 @@ import React from 'react';
 import { makeStyles } from '@material-ui/styles';
 import classnames from 'classnames';
 import Slide from 'components/Slide';
-import PlusButton from 'components/PlusButton';
 import type { SlidesState, Slide as SlideType } from 'redux/types';
 
 type Props = {
@@ -11,7 +10,6 @@ type Props = {
   currentSlide: SlideType,
   disabled?: boolean,
   onSlideClicked: (slideId: string) => void,
-  onAddClicked: (position: number) => void,
 };
 
 const useStyles = makeStyles(
@@ -37,11 +35,12 @@ const useStyles = makeStyles(
     inner: {
       maxHeight: '100%',
       overflowY: 'auto',
-      padding: [[0, 24, 24, 0]],
+      padding: [[8, 24, 24, 0]],
     },
     item: {
       display: 'flex',
       alignItems: 'flex-end',
+      margin: [[16, 0]],
     },
     postion: {
       minWidth: 32,
@@ -59,13 +58,7 @@ const useStyles = makeStyles(
 );
 
 export default function SlidesNav(props: Props) {
-  const {
-    slides,
-    currentSlide,
-    disabled,
-    onSlideClicked,
-    onAddClicked,
-  } = props;
+  const { slides, currentSlide, disabled, onSlideClicked } = props;
 
   const classes = useStyles();
 
@@ -76,26 +69,17 @@ export default function SlidesNav(props: Props) {
       })}
     >
       <div className={classes.inner}>
-        <PlusButton
-          onClick={() => {
-            onAddClicked(0);
-          }}
-        />
-
         {slides.map((slide, index) => (
-          <div key={slide.id}>
-            <div className={classes.item}>
-              <div className={classes.postion}>{index + 1}</div>
-              <div className={classes.slide}>
-                <Slide
-                  slide={slide}
-                  elevation={3}
-                  editing={slide.id === (currentSlide && currentSlide.id)}
-                  onClick={() => onSlideClicked(slide.id)}
-                />
-              </div>
+          <div className={classes.item} key={slide.id}>
+            <div className={classes.postion}>{index + 1}</div>
+            <div className={classes.slide}>
+              <Slide
+                slide={slide}
+                elevation={3}
+                editing={slide.id === (currentSlide && currentSlide.id)}
+                onClick={() => onSlideClicked(slide.id)}
+              />
             </div>
-            <PlusButton onClick={() => onAddClicked(index + 1)} />
           </div>
         ))}
       </div>
