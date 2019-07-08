@@ -68,18 +68,28 @@ export default function SlidesNav({
 }: Props) {
   const classes = useStyles();
 
+  function isLast(slide) {
+    return slides[slides.length - 1].id === slide.id;
+  }
+
   const transitions = useTransition(slides, slide => slide.id, {
     config: {
       duration: 300,
       easing,
     },
-    from: { height: 0, opacity: 0 },
+    from: item => ({
+      height: isLast(item) ? 64 : 0,
+      opacity: 0,
+    }),
     leave: () => async next => {
       await next({ opacity: 0 });
       await next({ height: 0 });
     },
-    enter: () => async next => {
-      await next({ height: 64 });
+    enter: item => async next => {
+      if (!isLast(item)) {
+        await next({ height: 64 });
+      }
+
       await next({ opacity: 1 });
     },
   });
