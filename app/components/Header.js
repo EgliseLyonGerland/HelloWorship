@@ -1,7 +1,14 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import Grow from '@material-ui/core/Grow';
+import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
 type Props = {
   onAddClicked: () => void,
@@ -20,8 +27,10 @@ const useStyles = makeStyles(({ palette }) => ({
   },
 }));
 
-export default function TitleBar({ onAddClicked }: Props) {
+export default function Header({ onAddClicked }: Props) {
   const classes = useStyles();
+  const [open, setOpen] = useState(false);
+  const buttonEl = useRef(null);
 
   return (
     <div className={classes.root}>
@@ -29,10 +38,38 @@ export default function TitleBar({ onAddClicked }: Props) {
         variant="contained"
         size="small"
         color="secondary"
-        onClick={onAddClicked}
+        onClick={() => setOpen(!open)}
+        ref={buttonEl}
       >
         <AddIcon />
+        <ArrowDropDownIcon />
       </Button>
+      <Popper open={open} anchorEl={buttonEl.current} transition>
+        {({ TransitionProps, placement }) => (
+          <Grow
+            {...TransitionProps}
+            style={{
+              transformOrigin:
+                placement === 'bottom' ? 'center top' : 'center bottom',
+            }}
+          >
+            <Paper square>
+              <ClickAwayListener onClickAway={() => setOpen(false)}>
+                <MenuList>
+                  <MenuItem
+                    onClick={() => {
+                      onAddClicked();
+                      setOpen(false);
+                    }}
+                  >
+                    Regular slide
+                  </MenuItem>
+                </MenuList>
+              </ClickAwayListener>
+            </Paper>
+          </Grow>
+        )}
+      </Popper>
     </div>
   );
 }
