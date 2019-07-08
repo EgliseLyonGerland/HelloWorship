@@ -9,10 +9,10 @@ import get from 'lodash/get';
 import transform from 'lodash/transform';
 import Slide from 'components/Slide';
 import templates from 'assets/templates';
-import type { Slide as SlideType } from 'redux/types';
+import type { RegularSlide } from 'redux/types';
 
 type Props = {
-  slide: SlideType,
+  slide: RegularSlide,
   onFieldChange: (name: string, value: mixed) => void,
   onTemplateAndBackgroundChangeClicked: () => void,
 };

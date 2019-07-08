@@ -10,11 +10,11 @@ import classnames from 'classnames';
 import Slide from 'components/Slide';
 import templates from 'assets/templates';
 import backgrounds from 'assets/backgrounds';
-import type { SlidesState, Slide as SlideType } from 'redux/types';
+import type { SlidesState, RegularSlide } from 'redux/types';
 
 type Props = {
   slides: SlidesState,
-  currentSlide: SlideType,
+  currentSlide: RegularSlide,
   onClose: () => void,
   onTemplateSelected: (templateId: string) => void,
   onBackgroundSelected: (backgroundId: string) => void,

@@ -179,7 +179,7 @@ function Main({
     );
   }
 
-  function handleAddSlide() {
+  function handleAddRegularSlide() {
     const index = findIndex(slides, ['id', currentSlide.id]);
 
     addDefaultSlide(index + 1);
@@ -187,7 +187,7 @@ function Main({
 
   return (
     <div className={classes.wrapper}>
-      <Header onAddClicked={handleAddSlide} />
+      <Header onAddRegularSlideClicked={handleAddRegularSlide} />
       <animated.div className={classes.panes} style={panesStyles}>
         <div className={classes.leftPane}>
           <SlidesNav

@@ -4,7 +4,12 @@ import findIndex from 'lodash/findIndex';
 
 import templates from 'assets/templates';
 import backgrounds from 'assets/backgrounds';
-import type { Slide, SlidesState, Dispatch, GetState } from 'redux/types';
+import type {
+  RegularSlide,
+  SlidesState,
+  Dispatch,
+  GetState,
+} from 'redux/types';
 
 export const SLIDES_ADD = 'slides/ADD';
 export const SLIDES_REPLACE = 'slides/REPLACE';
@@ -20,7 +25,7 @@ export function addDefaultSlide(position?: number) {
   return addSlide(slide, position);
 }
 
-export function addSlide(slide: Slide, position?: number) {
+export function addSlide(slide: RegularSlide, position?: number) {
   return async (dispatch: Dispatch, getState: GetState) => {
     const {
       slides,
@@ -36,7 +41,7 @@ export function addSlide(slide: Slide, position?: number) {
   };
 }
 
-export function replaceSlide(slide: Slide) {
+export function replaceSlide(slide: RegularSlide) {
   return {
     type: SLIDES_REPLACE,
     slide,

@@ -16,8 +16,11 @@ export type Reducers = {
 
 export type CombinedReducer = ReduxCombinedReducer<Reducers, Action>;
 
-export type Slide = {
+export type AbstractSlide = {
   id: string,
+};
+
+export type RegularSlide = AbstractSlide & {
   templateId: string,
   backgroundId: string,
   data: {
@@ -25,9 +28,9 @@ export type Slide = {
   },
 };
 
-export type SlidesState = Array<Slide>;
+export type SlidesState = Array<RegularSlide>;
 
-export type CurrentSlideState = Slide;
+export type CurrentSlideState = RegularSlide;
 
 export type State = {
   +slides: SlidesState,

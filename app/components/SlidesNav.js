@@ -6,11 +6,11 @@ import { useTransition, animated } from 'react-spring';
 import { easeQuadInOut as easing } from 'd3-ease';
 
 import Slide from 'components/Slide';
-import type { SlidesState, Slide as SlideType } from 'redux/types';
+import type { SlidesState, RegularSlide } from 'redux/types';
 
 type Props = {
   slides: SlidesState,
-  currentSlide: SlideType,
+  currentSlide: RegularSlide,
   disabled?: boolean,
   onSlideClicked: (slideId: string) => void,
 };

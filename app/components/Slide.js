@@ -5,7 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import classnames from 'classnames';
 import templates from 'assets/templates';
 import backgrounds from 'assets/backgrounds';
-import type { SlideState, Slide as SlideType } from 'redux/types';
+import type { SlideState, RegularSlide } from 'redux/types';
 
 import Artboard from 'components/Artboard';
 
@@ -13,7 +13,7 @@ type Props = {
   slide: SlideState,
   elevation?: number,
   editing?: boolean,
-  onClick?: (slide: SlideType) => void,
+  onClick?: (slide: RegularSlide) => void,
 };
 
 const width = 1920;

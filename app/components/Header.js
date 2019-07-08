@@ -11,7 +11,7 @@ import MenuList from '@material-ui/core/MenuList';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
 type Props = {
-  onAddClicked: () => void,
+  onAddRegularSlideClicked: () => void,
 };
 
 const useStyles = makeStyles(({ palette }) => ({
@@ -27,7 +27,7 @@ const useStyles = makeStyles(({ palette }) => ({
   },
 }));
 
-export default function Header({ onAddClicked }: Props) {
+export default function Header({ onAddRegularSlideClicked }: Props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const buttonEl = useRef(null);
@@ -58,12 +58,13 @@ export default function Header({ onAddClicked }: Props) {
                 <MenuList>
                   <MenuItem
                     onClick={() => {
-                      onAddClicked();
+                      onAddRegularSlideClicked();
                       setOpen(false);
                     }}
                   >
                     Regular slide
                   </MenuItem>
+                  <MenuItem>Song slide</MenuItem>
                 </MenuList>
               </ClickAwayListener>
             </Paper>
