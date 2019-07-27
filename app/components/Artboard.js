@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import get from 'lodash/get';
 
 import type { Template } from 'utils/types';
 
@@ -11,21 +10,9 @@ import { createDivider } from './elements/Divider';
 type Props = {
   template: Template,
   background: string,
-  data: {},
 };
 
-export default function ArtBoard({ template, background, data }: Props) {
-  function getElementValue({ bind }) {
-    const placeholder = get(template, ['form', bind, 'placeholder'], 'Empty');
-    const datum = get(data, bind);
-
-    if (!datum) {
-      return placeholder;
-    }
-
-    return datum;
-  }
-
+export default function ArtBoard({ template, background }: Props) {
   function renderFlex({ elements, ...options }) {
     return createFlexbox({
       ...options,
@@ -36,7 +23,7 @@ export default function ArtBoard({ template, background, data }: Props) {
   function renderText(element) {
     return createTextElement({
       ...element,
-      text: getElementValue(element),
+      text: element.value,
     });
   }
 
