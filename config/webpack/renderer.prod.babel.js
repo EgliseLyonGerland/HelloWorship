@@ -87,6 +87,10 @@ export default merge.smart(baseConfig, {
         test: /\.(?:ico|gif|png|jpg|jpeg|webp)$/,
         use: 'url-loader',
       },
+      {
+        test: /\.song$/,
+        use: `${__dirname}/song-loader`,
+      },
     ],
   },
 

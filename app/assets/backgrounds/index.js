@@ -5,10 +5,6 @@ context.keys().forEach(key => {
   const matches = /^\.\/(.+?)\.jpg$/.exec(key);
   const backgroundId = matches[1];
 
-  if (backgroundId === 'index') {
-    return;
-  }
-
   templates[backgroundId] = context(key);
 });
 
