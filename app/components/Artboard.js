@@ -1,7 +1,12 @@
 // @flow
 import React from 'react';
 
-import type { Template } from 'utils/types';
+import type {
+  Template,
+  AbstractElement,
+  TextElement,
+  FlexElement,
+} from 'utils/types';
 
 import { createFlexbox } from './elements/Flexbox';
 import { createTextElement } from './elements/Text';
@@ -13,14 +18,14 @@ type Props = {
 };
 
 export default function ArtBoard({ template, background }: Props) {
-  function renderFlex({ elements, ...options }) {
+  function renderFlex({ elements, ...options }: FlexElement) {
     return createFlexbox({
       ...options,
       children: renderElements(elements),
     });
   }
 
-  function renderText(element) {
+  function renderText(element: TextElement) {
     return createTextElement({
       ...element,
       text: element.value,
@@ -40,7 +45,7 @@ export default function ArtBoard({ template, background }: Props) {
     );
   }
 
-  function renderElement(element) {
+  function renderElement(element: AbstractElement) {
     switch (element.type) {
       case 'text':
         return renderText(element);
