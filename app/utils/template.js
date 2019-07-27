@@ -12,24 +12,28 @@ function getElementValue(template, data, { bind }) {
 }
 
 function bindDataToTemplate(template, data) {
-  const elements = template.elements.map(element => {
-    if (element.bind) {
-      return {
-        ...element,
-        value: getElementValue(template, data, element),
-      };
-    }
+  const mapElements = elements =>
+    elements.map(element => {
+      if (element.bind) {
+        return {
+          ...element,
+          value: getElementValue(template, data, element),
+        };
+      }
 
-    if (element.elements) {
-      return bindDataToTemplate(element, data);
-    }
+      if (element.elements) {
+        return {
+          ...element,
+          elements: mapElements(element.elements, data),
+        };
+      }
 
-    return element;
-  });
+      return element;
+    });
 
   return {
     ...template,
-    elements,
+    elements: mapElements(template.elements),
   };
 }
 
