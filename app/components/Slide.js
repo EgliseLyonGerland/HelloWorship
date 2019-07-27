@@ -5,7 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import classnames from 'classnames';
 import templates from 'assets/templates';
 import backgrounds from 'assets/backgrounds';
-import { bindDataToTemplate } from 'utils/template';
+import { bindDataToTemplate, createSongTemplate } from 'utils/template';
 import type { SlideState, RegularSlide } from 'redux/types';
 
 import Artboard from 'components/Artboard';
@@ -36,9 +36,19 @@ export default function Slide({ slide, onClick, elevation, editing }: Props) {
   }
 
   const classes = useStyles();
-  const { templateId, backgroundId, data } = slide;
-  const background = backgrounds[backgroundId];
-  const template = bindDataToTemplate(templates[templateId], data);
+
+  let template;
+  let background;
+
+  if (slide.type === 'song') {
+    background = backgrounds[Object.keys(backgrounds)[0]];
+    template = createSongTemplate({ title: 'Foobar' });
+  } else {
+    const { templateId, backgroundId } = slide;
+    background = backgrounds[backgroundId];
+    template = templates[templateId];
+    template = bindDataToTemplate(template, slide.data);
+  }
 
   return (
     <Paper

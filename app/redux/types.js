@@ -16,16 +16,32 @@ export type Reducers = {
 
 export type CombinedReducer = ReduxCombinedReducer<Reducers, Action>;
 
+export type Song = {
+  title: string,
+  author: string,
+  copyright: string,
+};
+
+export type SlideType = 'regular' | 'song';
+
 export type AbstractSlide = {
   id: string,
 };
 
 export type RegularSlide = AbstractSlide & {
+  type: 'regular',
   templateId: string,
   backgroundId: string,
   data: {
     [string]: number,
   },
+};
+
+export type SongSlide = AbstractSlide & {
+  type: 'song',
+  backgroundColor: string,
+  songId: string,
+  overrides: Song,
 };
 
 export type SlidesState = Array<RegularSlide>;

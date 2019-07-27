@@ -33,5 +33,34 @@ function bindDataToTemplate(template, data) {
   };
 }
 
-export { bindDataToTemplate };
-export default null;
+function createSongTemplate({ title }) {
+  return {
+    elements: [
+      {
+        type: 'flex',
+        width: 1920,
+        height: 1080,
+        spacing: 16,
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        elements: [
+          {
+            type: 'text',
+            value: title,
+            fontSize: 72,
+            fontWeight: 900,
+          },
+          {
+            type: 'text',
+            value: title,
+            fontSize: 40,
+            fontWeight: 500,
+          },
+        ],
+      },
+    ],
+  };
+}
+
+export { bindDataToTemplate, createSongTemplate };

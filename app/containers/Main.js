@@ -33,7 +33,8 @@ type Props = {
   currentSlide: CurrentSlideState,
   history: History,
   location: Location,
-  addDefaultSlide: number => Action,
+  addDefaultRegularSlide: number => Action,
+  addDefaultSongSlide: number => Action,
   deleteSlide: string => Action,
   saveCurrentSlide: () => Action,
   updateCurrentSlideTemplate: (templateId: string) => Action,
@@ -119,7 +120,8 @@ const mapDispatchToProps = dispatch => {
 function Main({
   slides,
   currentSlide,
-  addDefaultSlide,
+  addDefaultRegularSlide,
+  addDefaultSongSlide,
   deleteSlide,
   saveCurrentSlide,
   updateCurrentSlideTemplate,
@@ -130,7 +132,7 @@ function Main({
 }: Props) {
   useEffect(() => {
     if (slides.length === 0) {
-      addDefaultSlide(0);
+      addDefaultRegularSlide(0);
     }
   });
 
@@ -182,12 +184,21 @@ function Main({
   function handleAddRegularSlide() {
     const index = findIndex(slides, ['id', currentSlide.id]);
 
-    addDefaultSlide(index + 1);
+    addDefaultRegularSlide(index + 1);
+  }
+
+  function handleAddSongSlide() {
+    const index = findIndex(slides, ['id', currentSlide.id]);
+
+    addDefaultSongSlide(index + 1);
   }
 
   return (
     <div className={classes.wrapper}>
-      <Header onAddRegularSlideClicked={handleAddRegularSlide} />
+      <Header
+        onAddRegularSlideClicked={handleAddRegularSlide}
+        onAddSongSlideClicked={handleAddSongSlide}
+      />
       <animated.div className={classes.panes} style={panesStyles}>
         <div className={classes.leftPane}>
           <SlidesNav
