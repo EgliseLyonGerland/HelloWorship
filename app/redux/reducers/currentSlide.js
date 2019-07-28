@@ -25,6 +25,10 @@ export default function currentSlide(
     case CURRENT_SLIDE_UPDATE_GRADIENT:
       return set(state, 'gradientId', action.gradientId);
     case CURRENT_SLIDE_UPDATE_FIELD:
+      if (state.type === 'song') {
+        return set(state, ['overrides', action.name], action.value);
+      }
+
       return set(state, ['data', action.name], action.value);
     case CURRENT_SLIDE_SAVE:
     default:

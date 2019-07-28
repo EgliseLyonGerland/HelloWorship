@@ -86,6 +86,8 @@ const useStyles = makeStyles(
     rightPane: {
       minWidth: rightPaneWidth,
       maxWidth: rightPaneWidth,
+      maxHeight: '100%',
+      overflow: 'auto',
     },
     rightPaneInner: {
       position: 'relative',
@@ -250,6 +252,7 @@ function Main({
                       <SongSlideForm
                         slide={currentSlide}
                         onGradientChange={updateCurrentSlideGradient}
+                        onFieldChange={updateCurrentSlideField}
                       />
                     ) : (
                       <RegularSlideForm
