@@ -14,7 +14,8 @@ import { makeStyles } from '@material-ui/styles';
 import Header from 'components/Header';
 import Slide from 'components/Slide';
 import SlidesNav from 'components/SlidesNav';
-import SlideForm from 'components/SlideForm';
+import RegularSlideForm from 'components/RegularSlideForm';
+import SongSlideForm from 'components/SongSlideForm';
 import CurrentSlideActions from 'components/CurrentSlideActions';
 import SlideFormActions from 'components/SlideFormActions';
 import TemplateAndBackgroundPicker from 'components/TemplateAndBackgroundPicker';
@@ -39,6 +40,7 @@ type Props = {
   saveCurrentSlide: () => Action,
   updateCurrentSlideTemplate: (templateId: string) => Action,
   updateCurrentSlideBackground: (backgroundId: string) => Action,
+  updateCurrentSlideGradient: (gradientId: string) => Action,
   updateCurrentSlideField: (name: string, value: mixed) => Action,
 };
 
@@ -126,6 +128,7 @@ function Main({
   saveCurrentSlide,
   updateCurrentSlideTemplate,
   updateCurrentSlideBackground,
+  updateCurrentSlideGradient,
   updateCurrentSlideField,
   history,
   location,
@@ -242,15 +245,22 @@ function Main({
                     slideId: currentSlide.id,
                   })}
                   exact
-                  render={() => (
-                    <SlideForm
-                      slide={currentSlide}
-                      onFieldChange={updateCurrentSlideField}
-                      onTemplateAndBackgroundChangeClicked={() => {
-                        goTo(CURRENT_SLIDE_SET_TEMPLATE_AND_BACKGROUND);
-                      }}
-                    />
-                  )}
+                  render={() =>
+                    currentSlide.type === 'song' ? (
+                      <SongSlideForm
+                        slide={currentSlide}
+                        onGradientChange={updateCurrentSlideGradient}
+                      />
+                    ) : (
+                      <RegularSlideForm
+                        slide={currentSlide}
+                        onFieldChange={updateCurrentSlideField}
+                        onTemplateAndBackgroundChangeClicked={() => {
+                          goTo(CURRENT_SLIDE_SET_TEMPLATE_AND_BACKGROUND);
+                        }}
+                      />
+                    )
+                  }
                 />
                 <Route
                   path={generatePath(

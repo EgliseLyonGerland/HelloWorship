@@ -36,7 +36,7 @@ const useStyles = makeStyles(
       marginTop: -16,
     },
   },
-  { name: 'SlideForm' },
+  { name: 'RegularSlideForm' },
 );
 
 const renderTitle = title => {
@@ -50,7 +50,7 @@ const renderTitle = title => {
   );
 };
 
-export default function SlideForm(props: Props) {
+export default function RegularSlideForm(props: Props) {
   const { slide, onFieldChange, onTemplateAndBackgroundChangeClicked } = props;
   const { templateId, backgroundId } = slide;
 

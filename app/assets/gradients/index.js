@@ -8,7 +8,7 @@ export default gradients.reduce(
   (acc, colors, index) => ({
     ...acc,
     [index]: {
-      id: index,
+      id: `${index}`,
       startColor: colors[0],
       endColor: colors[1],
       backgroundImage: `radial-gradient(circle, ${colors[0]} 0%, ${
