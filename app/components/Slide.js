@@ -42,7 +42,7 @@ export default function Slide({ slide, onClick, elevation, editing }: Props) {
 
   if (slide.type === 'song') {
     background = backgrounds[Object.keys(backgrounds)[0]];
-    template = createSongTemplate({ title: 'Foobar' });
+    template = createSongTemplate(slide.overrides);
   } else {
     const { templateId, backgroundId } = slide;
     background = backgrounds[backgroundId];

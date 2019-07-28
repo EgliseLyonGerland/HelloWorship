@@ -4,6 +4,7 @@ import findIndex from 'lodash/findIndex';
 
 import templates from 'assets/templates';
 import backgrounds from 'assets/backgrounds';
+import songs from 'assets/songs';
 import type {
   AbstractSlide,
   RegularSlide,
@@ -30,16 +31,14 @@ export function addDefaultRegularSlide(position?: number) {
 }
 
 export function addDefaultSongSlide(position?: number) {
+  const songId = Object.keys(songs)[0];
+
   const slide: SongSlide = {
     id: uuid(),
     type: 'song',
     backgroundColor: 'blue',
-    songId: '123',
-    overrides: {
-      title: 'Lorem Ipsum',
-      author: 'Lorem Ipsum',
-      copyright: 'Lorem Ipsum',
-    },
+    songId,
+    overrides: songs[songId],
   };
 
   return addSlide(slide, position);

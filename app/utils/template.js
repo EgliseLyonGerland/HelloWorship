@@ -37,7 +37,17 @@ function bindDataToTemplate(template, data) {
   };
 }
 
-function createSongTemplate({ title }) {
+function createSongTemplate({ title, authors, copyright }) {
+  const baseline = [];
+
+  if (authors) {
+    baseline.push(authors);
+  }
+
+  if (copyright) {
+    baseline.push(`© ${copyright}`);
+  }
+
   return {
     elements: [
       {
@@ -52,14 +62,15 @@ function createSongTemplate({ title }) {
           {
             type: 'text',
             value: title,
-            fontSize: 72,
+            fontSize: 80,
             fontWeight: 900,
           },
           {
             type: 'text',
-            value: title,
-            fontSize: 40,
+            value: baseline.join(' – '),
+            fontSize: 50,
             fontWeight: 500,
+            opacity: 0.8,
           },
         ],
       },

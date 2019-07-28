@@ -28,6 +28,7 @@ type Props = {
   fontStyle: 'normal' | 'italic',
   lineHeight: number,
   textAlign: 'left' | 'right' | 'center',
+  opacity: number,
   width: number,
   // height: number,
 };
@@ -149,6 +150,7 @@ export default function Text({
   lineHeight = defaultLineHeight,
   textAlign = 'left',
   width = SLIDE_WIDTH,
+  opacity = 1,
 }: Props) {
   let data = text;
 
@@ -203,6 +205,7 @@ export default function Text({
         fontStyle,
         lineHeight,
         fontFamily,
+        opacity,
         fill: '#FFFFFF',
       }}
       dominantBaseline="text-before-edge"
