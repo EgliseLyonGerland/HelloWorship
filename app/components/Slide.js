@@ -5,6 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import classnames from 'classnames';
 import templates from 'assets/templates';
 import backgrounds from 'assets/backgrounds';
+import gradients from 'assets/gradients';
 import { bindDataToTemplate, createSongTemplate } from 'utils/template';
 import type { SlideState, RegularSlide } from 'redux/types';
 
@@ -38,14 +39,16 @@ export default function Slide({ slide, onClick, elevation, editing }: Props) {
   const classes = useStyles();
 
   let template;
-  let background;
+  let backgroundProp;
 
   if (slide.type === 'song') {
-    background = backgrounds[Object.keys(backgrounds)[0]];
+    backgroundProp = {
+      backgroundGradient: gradients[slide.gradientId].backgroundImage,
+    };
     template = createSongTemplate(slide.overrides);
   } else {
     const { templateId, backgroundId } = slide;
-    background = backgrounds[backgroundId];
+    backgroundProp = { backgroundImage: backgrounds[backgroundId] };
     template = templates[templateId];
     template = bindDataToTemplate(template, slide.data);
   }
@@ -62,7 +65,7 @@ export default function Slide({ slide, onClick, elevation, editing }: Props) {
       aria-hidden
       square
     >
-      <Artboard template={template} background={background} />
+      <Artboard template={template} {...backgroundProp} />
     </Paper>
   );
 }

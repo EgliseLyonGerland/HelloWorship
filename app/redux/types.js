@@ -39,7 +39,7 @@ export type RegularSlide = AbstractSlide & {
 
 export type SongSlide = AbstractSlide & {
   type: 'song',
-  backgroundColor: string,
+  gradientId: string,
   songId: string,
   overrides: Song,
 };

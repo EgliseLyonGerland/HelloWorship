@@ -4,6 +4,7 @@ import findIndex from 'lodash/findIndex';
 
 import templates from 'assets/templates';
 import backgrounds from 'assets/backgrounds';
+import gradients from 'assets/gradients';
 import songs from 'assets/songs';
 import type {
   AbstractSlide,
@@ -32,11 +33,12 @@ export function addDefaultRegularSlide(position?: number) {
 
 export function addDefaultSongSlide(position?: number) {
   const songId = Object.keys(songs)[0];
+  const gradientId = Object.keys(gradients)[0];
 
   const slide: SongSlide = {
     id: uuid(),
     type: 'song',
-    backgroundColor: 'blue',
+    gradientId,
     songId,
     overrides: songs[songId],
   };

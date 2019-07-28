@@ -14,10 +14,15 @@ import { createDivider } from './elements/Divider';
 
 type Props = {
   template: Template,
-  background: string,
+  backgroundGradient: string,
+  backgroundImage: string,
 };
 
-export default function ArtBoard({ template, background }: Props) {
+export default function ArtBoard({
+  template,
+  backgroundGradient,
+  backgroundImage,
+}: Props) {
   function renderFlex({ elements, ...options }: FlexElement) {
     return createFlexbox({
       ...options,
@@ -58,10 +63,20 @@ export default function ArtBoard({ template, background }: Props) {
     }
   }
 
-  const style = {
-    backgroundImage: `url(${background})`,
-    backgroundSize: 'cover',
-  };
+  let style = {};
+
+  if (backgroundGradient) {
+    style = {
+      backgroundImage: backgroundGradient,
+    };
+  }
+
+  if (backgroundImage) {
+    style = {
+      backgroundImage: `url(${backgroundImage})`,
+      backgroundSize: 'cover',
+    };
+  }
 
   return (
     <div style={style}>
