@@ -7,6 +7,7 @@ export const CURRENT_SLIDE_SAVE = 'currentSlide/SAVE';
 export const CURRENT_SLIDE_UPDATE_TEMPLATE = 'currentSlide/UPDATE_TEMPLATE';
 export const CURRENT_SLIDE_UPDATE_BACKGROUND = 'currentSlide/UPDATE_BACKGROUND';
 export const CURRENT_SLIDE_UPDATE_GRADIENT = 'currentSlide/UPDATE_GRADIENT';
+export const CURRENT_SLIDE_UPDATE_SONG = 'currentSlide/UPDATE_SONG';
 export const CURRENT_SLIDE_UPDATE_FIELD = 'currentSlide/UPDATE_FIELD';
 
 export function setCurrentSlide(slideId: string) {
@@ -48,6 +49,13 @@ export function updateCurrentSlideGradient(gradientId: string) {
   return {
     type: CURRENT_SLIDE_UPDATE_GRADIENT,
     gradientId,
+  };
+}
+
+export function updateCurrentSlideSong(songId: string) {
+  return {
+    type: CURRENT_SLIDE_UPDATE_SONG,
+    songId,
   };
 }
 

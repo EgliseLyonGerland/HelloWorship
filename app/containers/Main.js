@@ -41,6 +41,7 @@ type Props = {
   updateCurrentSlideTemplate: (templateId: string) => Action,
   updateCurrentSlideBackground: (backgroundId: string) => Action,
   updateCurrentSlideGradient: (gradientId: string) => Action,
+  updateCurrentSlideSong: (songId: string) => Action,
   updateCurrentSlideField: (name: string, value: mixed) => Action,
 };
 
@@ -131,6 +132,7 @@ function Main({
   updateCurrentSlideTemplate,
   updateCurrentSlideBackground,
   updateCurrentSlideGradient,
+  updateCurrentSlideSong,
   updateCurrentSlideField,
   history,
   location,
@@ -252,6 +254,7 @@ function Main({
                       <SongSlideForm
                         slide={currentSlide}
                         onGradientChange={updateCurrentSlideGradient}
+                        onSongChange={updateCurrentSlideSong}
                         onFieldChange={updateCurrentSlideField}
                       />
                     ) : (

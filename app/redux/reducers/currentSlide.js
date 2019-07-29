@@ -1,5 +1,6 @@
 // @flow
 import set from 'immutable-set';
+import songs from 'assets/songs';
 
 import {
   CURRENT_SLIDE_SET,
@@ -7,6 +8,7 @@ import {
   CURRENT_SLIDE_UPDATE_TEMPLATE,
   CURRENT_SLIDE_UPDATE_BACKGROUND,
   CURRENT_SLIDE_UPDATE_GRADIENT,
+  CURRENT_SLIDE_UPDATE_SONG,
   CURRENT_SLIDE_UPDATE_FIELD,
 } from 'redux/actions/currentSlide';
 import type { Action, CurrentSlideState } from '../types';
@@ -24,6 +26,12 @@ export default function currentSlide(
       return set(state, 'backgroundId', action.backgroundId);
     case CURRENT_SLIDE_UPDATE_GRADIENT:
       return set(state, 'gradientId', action.gradientId);
+    case CURRENT_SLIDE_UPDATE_SONG:
+      return {
+        ...state,
+        songId: action.songId,
+        overrides: songs[action.songId],
+      };
     case CURRENT_SLIDE_UPDATE_FIELD:
       if (state.type === 'song') {
         return set(state, ['overrides', action.name], action.value);
